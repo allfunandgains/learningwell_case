@@ -1,5 +1,7 @@
 package se.robert.app.views.panels;
 
+import se.robert.app.utilities.AppConfig;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -12,20 +14,20 @@ public class InputPanel extends JPanel {
     JButton displayButton;
 
     public InputPanel() {
-        this.setPreferredSize(new java.awt.Dimension(300, 250));
+        this.setPreferredSize(new java.awt.Dimension(AppConfig.INPUT_PANEL_WIDTH, AppConfig.INPUT_PANEL_HEIGHT));
         this.setLayout(new java.awt.FlowLayout());
 
-        inputField = new javax.swing.JTextField( 10);
-        inputField.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16));
+        inputField = new javax.swing.JTextField( AppConfig.INPUT_FIELD_COLUMNS);
+        inputField.setFont(AppConfig.STANDARD_FONT);
 
 
 
         inputLabel = new javax.swing.JLabel("Specify ISO code: ");
-        inputLabel.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16));
+        inputLabel.setFont(AppConfig.STANDARD_FONT);
 
         inputLabel.setLabelFor(inputField);
         displayButton = new javax.swing.JButton("Display chart");
-        displayButton.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 16));
+        displayButton.setFont(AppConfig.STANDARD_FONT);
 
 
         this.add(inputLabel);

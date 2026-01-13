@@ -1,5 +1,7 @@
 package se.robert.app.views.panels;
 
+import se.robert.app.utilities.AppConfig;
+
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Dimension;
@@ -13,9 +15,9 @@ public class InfoPanel extends JPanel {
     public InfoPanel() {
         infoLabel = new JLabel("Displaying data for:");
         countryLabel = new JLabel("No country selected.");
-        infoLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        countryLabel.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        this.setPreferredSize(new Dimension(300,250));
+        infoLabel.setFont(AppConfig.STANDARD_FONT);
+        countryLabel.setFont(AppConfig.STANDARD_FONT);
+        this.setPreferredSize(new Dimension(AppConfig.INFO_PANEL_WIDTH,AppConfig.INFO_PANEL_HEIGHT));
 
         this.add(infoLabel);
         this.add(countryLabel);
