@@ -21,4 +21,6 @@ public final class AppConfig {
     public static final int INPUT_PANEL_HEIGHT = 250;
     public static final int INPUT_FIELD_COLUMNS = 10;
 
+    public static final String API_ADDRESS = "https://webgate.ec.europa.eu/empl/redisstat/api/dissemination/sdmx/2.1/data/lmp_ind_actru?format=json&compressed=false";
+
 }
