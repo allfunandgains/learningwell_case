@@ -20,4 +20,8 @@ public class InfoPanel extends JPanel {
         this.add(infoLabel);
         this.add(countryLabel);
     }
+
+    public JLabel getCountryLabel() {
+        return countryLabel;
+    }
 }

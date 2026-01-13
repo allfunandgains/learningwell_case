@@ -34,4 +34,12 @@ public class InputPanel extends JPanel {
 
         this.setVisible(true);
     }
+
+    public JTextField getInputField() {
+        return inputField;
+    }
+
+    public JButton getDisplayButton() {
+        return displayButton;
+    }
 }

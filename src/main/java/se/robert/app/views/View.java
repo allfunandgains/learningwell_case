@@ -46,4 +46,12 @@ public class View extends JFrame {
         this.setVisible(true);
         this.setLocationRelativeTo(null);
     }
+
+    public LeftPanel getLeftPanel() {
+        return leftPanel;
+    }
+
+    public RightPanel getRightPanel() {
+        return rightPanel;
+    }
 }

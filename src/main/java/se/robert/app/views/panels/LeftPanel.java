@@ -19,4 +19,12 @@ public class LeftPanel extends JPanel {
         this.add(infoPanel);
         this.setBackground(Color.WHITE);
     }
+
+    public InputPanel getInputPanel() {
+        return inputPanel;
+    }
+
+    public InfoPanel getInfoPanel() {
+        return infoPanel;
+    }
 }
