@@ -1,4 +1,35 @@
 package se.robert.app.api;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+/**
+ * Responsible for retrieving data from the web API.
+ *
+ * @author Robert Kullman
+ */
 public class ApiClient {
+
+    HttpClient client = HttpClient.newHttpClient();
+
+    public String getData(String url) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder(URI.create(url)).build();
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() >= 400) {
+                throw new IOException("Bad Request");
+            }
+            return response.body();
+
+        } catch (IOException | InterruptedException e) {
+           System.out.println(e.getMessage());
+        }
+        return null;
+    }
+
+
 }
