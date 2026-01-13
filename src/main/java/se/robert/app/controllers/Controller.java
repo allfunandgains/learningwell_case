@@ -11,5 +11,15 @@ public class Controller {
     public Controller() {
         view = new View();
         model = new Model();
+        addActionListeners();
+    }
+
+    private void addActionListeners() {
+        view.getLeftPanel().getInputPanel().getDisplayButton().addActionListener((e) -> getUserInput());
+    }
+
+    private void getUserInput() {
+         String input = view.getLeftPanel().getInputPanel().getInputField().getText();
+         System.out.println(input);
     }
 }
