@@ -1,6 +1,10 @@
 package se.robert.app.views;
 
+import se.robert.app.views.panels.LeftPanel;
+import se.robert.app.views.panels.RightPanel;
+
 import javax.swing.JFrame;
+import java.awt.FlowLayout;
 
 /**
  * Represents the main view of the application.
@@ -10,6 +14,9 @@ import javax.swing.JFrame;
  * @author Robert Kullman
  */
 public class View extends JFrame {
+
+    LeftPanel leftPanel;
+    RightPanel rightPanel;
 
     /**
      * Contructor for the View class.
@@ -23,10 +30,20 @@ public class View extends JFrame {
      */
     private void initUI() {
         this.setTitle("View");
-        this.setSize(800, 600);
-        this.setVisible(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setResizable(false);
+
+
+        this.setLayout(new FlowLayout());
+
+        leftPanel = new LeftPanel();
+        rightPanel = new RightPanel();
+
+        this.add(leftPanel);
+        this.add(rightPanel);
+
+        this.pack();
+        this.setVisible(true);
         this.setLocationRelativeTo(null);
     }
 }
