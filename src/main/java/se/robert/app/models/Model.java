@@ -115,8 +115,6 @@ public class Model {
                 .getAsJsonObject("category")
                 .getAsJsonObject("index");
 
-        boolean exists = geoIndex.has(countryISO);
-
         if (!geoIndex.has(countryISO)) {
             System.err.println("geoIndex has not been set.");
             // TODO: add error dialog
@@ -125,16 +123,11 @@ public class Model {
 
         LinkedList<YearData> currentDataSet = new LinkedList<>();
 
-
         Map<String, Integer> selection = baseSelectionWithCountry(countryISO);
         Map<String, Integer> dimensionSizes = getDimensionSizes();
         LinkedHashMap<String, Integer> years = getYearsMap();
 
         years.forEach((key, year) -> {
-            List<Integer> sizes = AppConfig.DIMENSION_ORDER.stream()
-                    .map(dimensionSizes::get)
-                    .toList();
-
             selection.put("TIME_PERIOD", year);
             selection.put("SEX", 1);
 
@@ -146,7 +139,7 @@ public class Model {
             int femaleIndex = flatIndexFor(selection, dimensionSizes);
             float femaleValue = getValue(Integer.toString(femaleIndex), root);
 
-            currentDataSet.add(new YearData(year, maleValue, femaleValue));
+            currentDataSet.add(new YearData(Integer.parseInt(key), maleValue, femaleValue));
         });
         return currentDataSet;
     }
