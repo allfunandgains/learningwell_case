@@ -26,24 +26,17 @@ public class Model {
     private final ApiClient apiClient;
     private JsonObject root;
 
-    private final LinkedHashMap<String, Integer> dimensionSizes;
-
     private LinkedList<YearData> currentDataSet;
 
     public Model(ApiClient client) {
 
         this.apiClient = client;
-        dimensionSizes = new LinkedHashMap<>();
         //countryDimensionIndices = new LinkedHashMap<>();
         // load json data
         loadJsonData();
 
         // setup dimension data to be used in index calculation
-        boolean success = populateDimensionSizes();
-        if (!success) {
-            System.err.println("Failed to setup dimension data.");
-            return;
-        }
+
 
     }
 
@@ -83,10 +76,10 @@ public class Model {
                 .getAsInt();
     }
 
-    private boolean populateDimensionSizes() {
+    private LinkedHashMap<String, Integer> getDimensionSizes() {
         if (root == null) {
             System.err.println("root is null.");
-            return false;
+            return null;
         }
 
         JsonArray dimensionIDs = root.get("id").getAsJsonArray();
@@ -94,13 +87,15 @@ public class Model {
 
         if (dimensionIDs.size() != sizes.size()) {
             System.err.println("dimensionIDs size != sizes.");
-            return false;
+            return null;
         }
+
+        LinkedHashMap<String, Integer> dimensionSizes = new LinkedHashMap<>();
 
         for (int i = 0; i < dimensionIDs.size(); i++) {
             dimensionSizes.put(dimensionIDs.get(i).getAsString(), sizes.get(i).getAsInt());
         }
-        return true;
+        return dimensionSizes;
     }
 
     private Map<String, Integer> baseSelection() {
@@ -120,11 +115,25 @@ public class Model {
     }
 
     public void generateDataSet(String countryISO) {
-        //TODO: add input validation, show error dialog if ISO is not found.
+
+        JsonObject geoIndex = root
+                .getAsJsonObject("dimension")
+                .getAsJsonObject("GEO")
+                .getAsJsonObject("category")
+                .getAsJsonObject("index");
+
+        boolean exists = geoIndex.has(countryISO);
+
+        if (!geoIndex.has(countryISO)) {
+            System.err.println("geoIndex has not been set.");
+            // TODO: add error dialog
+            return;
+        }
 
         currentDataSet = new LinkedList<>();
 
         Map<String, Integer> selection = baseSelectionWithCountry(countryISO);
+        Map<String, Integer> dimensionSizes = getDimensionSizes();
         LinkedHashMap<String, Integer> years = getYearsMap();
 
         years.forEach((key, year) -> {
@@ -135,19 +144,19 @@ public class Model {
             selection.put("TIME_PERIOD", year);
             selection.put("SEX", 1);
 
-            int maleIndex = flatIndexFor(selection);
+            int maleIndex = flatIndexFor(selection, dimensionSizes);
             float maleValue = getValue(Integer.toString(maleIndex), root);
 
             selection.put("SEX", 2);
 
-            int femaleIndex = flatIndexFor(selection);
+            int femaleIndex = flatIndexFor(selection, dimensionSizes);
             float femaleValue = getValue(Integer.toString(femaleIndex), root);
 
             currentDataSet.add(new YearData(year, maleValue, femaleValue));
         });
     }
 
-    private int flatIndexFor(Map<String, Integer> selection) {
+    private int flatIndexFor(Map<String, Integer> selection, Map<String, Integer> dimensionSizes) {
         List<Integer> indices = AppConfig.DIMENSION_ORDER.stream()
                 .map(selection::get)
                 .toList();
