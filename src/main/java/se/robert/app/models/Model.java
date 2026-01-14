@@ -6,7 +6,9 @@ import com.google.gson.JsonParser;
 import se.robert.app.api.ApiClient;
 import se.robert.app.utilities.AppConfig;
 
+import java.util.Comparator;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * The model component of the MVC pattern.
@@ -20,13 +22,12 @@ public class Model {
     private JsonObject root;
 
     private final LinkedHashMap<String, Integer> dimensionSizes;
-    private final LinkedHashMap<String, Integer> countryDimensionIndices;
 
     public Model(ApiClient client) {
 
         this.apiClient = client;
         dimensionSizes = new LinkedHashMap<>();
-        countryDimensionIndices = new LinkedHashMap<>();
+        //countryDimensionIndices = new LinkedHashMap<>();
         // load json data
         loadJsonData();
 
@@ -37,10 +38,8 @@ public class Model {
             return;
         }
 
-        // get country-specific dimension data
-        populateCountryDimensionIndices("SE");
-
         // calculate
+        generateDataSet();
 
     }
 
@@ -100,15 +99,55 @@ public class Model {
         return true;
     }
 
-    private void populateCountryDimensionIndices(String countryISO) {
-        countryDimensionIndices.put("FREQ", getSpecificDimensionData(root, "FREQ", "A"));
-        countryDimensionIndices.put("UNIT", getSpecificDimensionData(root, "UNIT", "RT"));
-        countryDimensionIndices.put("AGE", getSpecificDimensionData(root, "AGE", "TOTAL"));
-        countryDimensionIndices.put("SEX", getSpecificDimensionData(root, "SEX", "T")); // placeholder
-        countryDimensionIndices.put("REGIS_ES", getSpecificDimensionData(root, "REGIS_ES", "REG_UNE"));
-        countryDimensionIndices.put("LMP_TYPE", getSpecificDimensionData(root, "LMP_TYPE", "TOT2_7"));
-        countryDimensionIndices.put("GEO", getSpecificDimensionData(root, "GEO", countryISO));
-        countryDimensionIndices.put("TIME_PERIOD", 0); // placeholder
+    private Map<String, Integer> baseSelection() {
+        Map<String, Integer> m = new LinkedHashMap<>();
+        m.put("FREQ", getSpecificDimensionData(root, "FREQ", "A"));
+        m.put("UNIT", getSpecificDimensionData(root, "UNIT", "RT"));
+        m.put("AGE",  getSpecificDimensionData(root, "AGE", "TOTAL"));
+        m.put("REGIS_ES", getSpecificDimensionData(root, "REGIS_ES", "REG_UNE"));
+        m.put("LMP_TYPE", getSpecificDimensionData(root, "LMP_TYPE", "TOT2_7"));
+        return m;
     }
+
+    private Map<String, Integer> baseSelectionWithCountry(String countryISO) {
+        Map<String, Integer> selection = baseSelection();
+        selection.put("GEO",  getSpecificDimensionData(root, "GEO", countryISO));
+        return selection;
+    }
+
+    private void generateDataSet() {
+        Map<String, Integer> selection = baseSelectionWithCountry("SE");
+        Map<String, Integer> years = getYearsMap();
+
+        years.forEach((key, year) -> {
+            //TODO: replace console prints with actual data retrieval.
+            selection.put("TIME_PERIOD", year);
+            selection.put("SEX", 1);
+            System.out.println("Male dimensions for year " + year);
+            System.out.println(selection);
+            selection.put("SEX", 2);
+            System.out.println("Female dimensions for year " + year);
+            System.out.println(selection);
+
+        });
+
+    }
+
+    private Map<String, Integer> getYearsMap() {
+        Map<String, Integer> years = new LinkedHashMap<>();
+
+        JsonObject yearIndex = root
+                .getAsJsonObject("dimension")
+                .getAsJsonObject("TIME_PERIOD")
+                .getAsJsonObject("category")
+                .getAsJsonObject("index");
+
+        yearIndex.entrySet().stream()
+                .sorted(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())))
+                .forEach(e -> years.put(e.getKey(), e.getValue().getAsInt()));
+
+        return years;
+    }
+
 
 }
