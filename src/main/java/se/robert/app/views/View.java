@@ -60,5 +60,6 @@ public class View extends JFrame {
 
     public void showData(LinkedList<YearData> data) {
         System.out.println("showData from View");
+        rightPanel.setData(data);
     }
 }
