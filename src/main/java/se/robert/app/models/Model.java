@@ -1,9 +1,12 @@
 package se.robert.app.models;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import se.robert.app.api.ApiClient;
 import se.robert.app.utilities.AppConfig;
+
+import java.util.LinkedHashMap;
 
 /**
  * The model component of the MVC pattern.
@@ -16,11 +19,25 @@ public class Model {
     private final ApiClient apiClient;
     private JsonObject root;
 
+    private final LinkedHashMap<String, Integer> dimensionSizes;
+
     public Model(ApiClient client) {
 
         this.apiClient = client;
-
+        dimensionSizes = new LinkedHashMap<>();
+        // load json data
         loadJsonData();
+
+        // setup dimension data to be used in index calculation
+        boolean success = getDimensionSizes();
+        if (!success) {
+            System.err.println("Failed to setup dimension data.");
+            return;
+        }
+
+        // get country-specific dimension data
+
+        // calculate
 
     }
 
@@ -58,6 +75,26 @@ public class Model {
                 .getAsJsonObject("index")
                 .get(key)
                 .getAsInt();
+    }
+
+    private boolean getDimensionSizes() {
+        if (root == null) {
+            System.err.println("root is null.");
+            return false;
+        }
+
+        JsonArray dimensionIDs = root.get("id").getAsJsonArray();
+        JsonArray sizes = root.get("size").getAsJsonArray();
+
+        if (dimensionIDs.size() != sizes.size()) {
+            System.err.println("dimensionIDs size != sizes.");
+            return false;
+        }
+
+        for (int i = 0; i < dimensionIDs.size(); i++) {
+            dimensionSizes.put(dimensionIDs.get(i).getAsString(), sizes.get(i).getAsInt());
+        }
+        return true;
     }
 
 }
