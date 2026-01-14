@@ -1,10 +1,13 @@
 package se.robert.app.views;
 
+import se.robert.app.records.YearData;
 import se.robert.app.views.panels.LeftPanel;
 import se.robert.app.views.panels.RightPanel;
 
 import javax.swing.JFrame;
 import java.awt.FlowLayout;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Represents the main view of the application.
@@ -53,5 +56,9 @@ public class View extends JFrame {
 
     public RightPanel getRightPanel() {
         return rightPanel;
+    }
+
+    public void showData(LinkedList<YearData> data) {
+        System.out.println("showData from View");
     }
 }

@@ -26,18 +26,11 @@ public class Model {
     private final ApiClient apiClient;
     private JsonObject root;
 
-    private LinkedList<YearData> currentDataSet;
-
     public Model(ApiClient client) {
 
         this.apiClient = client;
-        //countryDimensionIndices = new LinkedHashMap<>();
-        // load json data
+
         loadJsonData();
-
-        // setup dimension data to be used in index calculation
-
-
     }
 
     /**
@@ -114,7 +107,7 @@ public class Model {
         return selection;
     }
 
-    public void generateDataSet(String countryISO) {
+    public LinkedList<YearData> generateDataSet(String countryISO) {
 
         JsonObject geoIndex = root
                 .getAsJsonObject("dimension")
@@ -127,10 +120,11 @@ public class Model {
         if (!geoIndex.has(countryISO)) {
             System.err.println("geoIndex has not been set.");
             // TODO: add error dialog
-            return;
+            return null;
         }
 
-        currentDataSet = new LinkedList<>();
+        LinkedList<YearData> currentDataSet = new LinkedList<>();
+
 
         Map<String, Integer> selection = baseSelectionWithCountry(countryISO);
         Map<String, Integer> dimensionSizes = getDimensionSizes();
@@ -154,6 +148,7 @@ public class Model {
 
             currentDataSet.add(new YearData(year, maleValue, femaleValue));
         });
+        return currentDataSet;
     }
 
     private int flatIndexFor(Map<String, Integer> selection, Map<String, Integer> dimensionSizes) {

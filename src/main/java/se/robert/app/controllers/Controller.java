@@ -2,8 +2,10 @@ package se.robert.app.controllers;
 
 import se.robert.app.api.ApiClient;
 import se.robert.app.models.Model;
+import se.robert.app.records.YearData;
 import se.robert.app.views.View;
 
+import java.util.LinkedList;
 import java.util.Locale;
 
 public class Controller {
@@ -23,7 +25,7 @@ public class Controller {
 
     private void getUserInput() {
          String input = view.getLeftPanel().getInputPanel().getInputField().getText();
-         System.out.println(input);
-         model.generateDataSet(input.toUpperCase(Locale.ROOT));
+        LinkedList<YearData> data = model.generateDataSet(input.toUpperCase(Locale.ROOT));
+        view.showData(data);
     }
 }
