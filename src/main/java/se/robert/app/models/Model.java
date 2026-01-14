@@ -20,22 +20,25 @@ public class Model {
     private JsonObject root;
 
     private final LinkedHashMap<String, Integer> dimensionSizes;
+    private final LinkedHashMap<String, Integer> countryDimensionIndices;
 
     public Model(ApiClient client) {
 
         this.apiClient = client;
         dimensionSizes = new LinkedHashMap<>();
+        countryDimensionIndices = new LinkedHashMap<>();
         // load json data
         loadJsonData();
 
         // setup dimension data to be used in index calculation
-        boolean success = getDimensionSizes();
+        boolean success = populateDimensionSizes();
         if (!success) {
             System.err.println("Failed to setup dimension data.");
             return;
         }
 
         // get country-specific dimension data
+        populateCountryDimensionIndices("SE");
 
         // calculate
 
@@ -77,7 +80,7 @@ public class Model {
                 .getAsInt();
     }
 
-    private boolean getDimensionSizes() {
+    private boolean populateDimensionSizes() {
         if (root == null) {
             System.err.println("root is null.");
             return false;
@@ -95,6 +98,17 @@ public class Model {
             dimensionSizes.put(dimensionIDs.get(i).getAsString(), sizes.get(i).getAsInt());
         }
         return true;
+    }
+
+    private void populateCountryDimensionIndices(String countryISO) {
+        countryDimensionIndices.put("FREQ", getSpecificDimensionData(root, "FREQ", "A"));
+        countryDimensionIndices.put("UNIT", getSpecificDimensionData(root, "UNIT", "RT"));
+        countryDimensionIndices.put("AGE", getSpecificDimensionData(root, "AGE", "TOTAL"));
+        countryDimensionIndices.put("SEX", getSpecificDimensionData(root, "SEX", "T")); // placeholder
+        countryDimensionIndices.put("REGIS_ES", getSpecificDimensionData(root, "REGIS_ES", "REG_UNE"));
+        countryDimensionIndices.put("LMP_TYPE", getSpecificDimensionData(root, "LMP_TYPE", "TOT2_7"));
+        countryDimensionIndices.put("GEO", getSpecificDimensionData(root, "GEO", countryISO));
+        countryDimensionIndices.put("TIME_PERIOD", 0); // placeholder
     }
 
 }
