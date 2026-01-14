@@ -1,13 +1,18 @@
 package se.robert.app.models;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import se.robert.app.api.ApiClient;
+import se.robert.app.records.YearData;
 import se.robert.app.utilities.AppConfig;
 
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,6 +27,8 @@ public class Model {
     private JsonObject root;
 
     private final LinkedHashMap<String, Integer> dimensionSizes;
+
+    private LinkedList<YearData> currentDataSet;
 
     public Model(ApiClient client) {
 
@@ -97,7 +104,7 @@ public class Model {
     }
 
     private Map<String, Integer> baseSelection() {
-        Map<String, Integer> m = new LinkedHashMap<>();
+        Map<String, Integer> m = new HashMap<>();
         m.put("FREQ", getSpecificDimensionData(root, "FREQ", "A"));
         m.put("UNIT", getSpecificDimensionData(root, "UNIT", "RT"));
         m.put("AGE",  getSpecificDimensionData(root, "AGE", "TOTAL"));
@@ -115,25 +122,45 @@ public class Model {
     public void generateDataSet(String countryISO) {
         //TODO: add input validation, show error dialog if ISO is not found.
 
+        currentDataSet = new LinkedList<>();
+
         Map<String, Integer> selection = baseSelectionWithCountry(countryISO);
-        Map<String, Integer> years = getYearsMap();
+        LinkedHashMap<String, Integer> years = getYearsMap();
 
         years.forEach((key, year) -> {
-            //TODO: replace console prints with actual data retrieval.
+            List<Integer> sizes = AppConfig.DIMENSION_ORDER.stream()
+                    .map(dimensionSizes::get)
+                    .toList();
+
             selection.put("TIME_PERIOD", year);
             selection.put("SEX", 1);
-            System.out.println("Male dimensions for year " + year);
-            System.out.println(selection);
+
+            int maleIndex = flatIndexFor(selection);
+            float maleValue = getValue(Integer.toString(maleIndex), root);
+
             selection.put("SEX", 2);
-            System.out.println("Female dimensions for year " + year);
-            System.out.println(selection);
 
+            int femaleIndex = flatIndexFor(selection);
+            float femaleValue = getValue(Integer.toString(femaleIndex), root);
+
+            currentDataSet.add(new YearData(year, maleValue, femaleValue));
         });
-
     }
 
-    private Map<String, Integer> getYearsMap() {
-        Map<String, Integer> years = new LinkedHashMap<>();
+    private int flatIndexFor(Map<String, Integer> selection) {
+        List<Integer> indices = AppConfig.DIMENSION_ORDER.stream()
+                .map(selection::get)
+                .toList();
+
+        List<Integer> sizes = AppConfig.DIMENSION_ORDER.stream()
+                .map(dimensionSizes::get)
+                .toList();
+
+        return calculateFlatIndex(indices, sizes);
+    }
+
+    private LinkedHashMap<String, Integer> getYearsMap() {
+        LinkedHashMap<String, Integer> years = new LinkedHashMap<>();
 
         JsonObject yearIndex = root
                 .getAsJsonObject("dimension")
@@ -146,6 +173,23 @@ public class Model {
                 .forEach(e -> years.put(e.getKey(), e.getValue().getAsInt()));
 
         return years;
+    }
+
+    private int calculateFlatIndex(List<Integer> indices, List<Integer> sizes) {
+        int idx = 0;
+        for (int k = 0; k < sizes.size(); k++) {
+            idx = idx * sizes.get(k) + indices.get(k);
+        }
+        return idx;
+    }
+
+    private float getValue(String key, JsonObject root) {
+        JsonElement e = root.getAsJsonObject("value").get(key);
+        if (e == null || e.isJsonNull()) {
+            return Float.NaN;
+        }
+
+        return e.getAsFloat();
     }
 
 

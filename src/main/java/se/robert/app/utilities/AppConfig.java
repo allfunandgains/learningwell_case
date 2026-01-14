@@ -1,6 +1,7 @@
 package se.robert.app.utilities;
 
 import java.awt.Font;
+import java.util.List;
 
 /**
  * This class contains configuration data.
@@ -23,4 +24,7 @@ public final class AppConfig {
 
     public static final String API_ADDRESS = "https://webgate.ec.europa.eu/empl/redisstat/api/dissemination/sdmx/2.1/data/lmp_ind_actru?format=json&compressed=false";
 
+    public static final List<String> DIMENSION_ORDER = List.of(
+            "FREQ", "UNIT", "AGE", "SEX", "REGIS_ES", "LMP_TYPE", "GEO", "TIME_PERIOD"
+    );
 }
