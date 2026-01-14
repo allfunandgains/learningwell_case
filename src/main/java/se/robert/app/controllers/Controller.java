@@ -4,6 +4,8 @@ import se.robert.app.api.ApiClient;
 import se.robert.app.models.Model;
 import se.robert.app.views.View;
 
+import java.util.Locale;
+
 public class Controller {
 
     private final View view;
@@ -22,6 +24,6 @@ public class Controller {
     private void getUserInput() {
          String input = view.getLeftPanel().getInputPanel().getInputField().getText();
          System.out.println(input);
-         model.generateDataSet(input);
+         model.generateDataSet(input.toUpperCase(Locale.ROOT));
     }
 }
