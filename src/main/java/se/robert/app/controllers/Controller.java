@@ -22,5 +22,6 @@ public class Controller {
     private void getUserInput() {
          String input = view.getLeftPanel().getInputPanel().getInputField().getText();
          System.out.println(input);
+         model.generateDataSet(input);
     }
 }

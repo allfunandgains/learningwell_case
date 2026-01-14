@@ -38,9 +38,6 @@ public class Model {
             return;
         }
 
-        // calculate
-        generateDataSet();
-
     }
 
     /**
@@ -115,8 +112,10 @@ public class Model {
         return selection;
     }
 
-    private void generateDataSet() {
-        Map<String, Integer> selection = baseSelectionWithCountry("SE");
+    public void generateDataSet(String countryISO) {
+        //TODO: add input validation, show error dialog if ISO is not found.
+
+        Map<String, Integer> selection = baseSelectionWithCountry(countryISO);
         Map<String, Integer> years = getYearsMap();
 
         years.forEach((key, year) -> {
