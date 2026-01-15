@@ -78,7 +78,7 @@ public final class AppConfig {
     public static final int INPUT_FIELD_COLUMNS = 10;
     public static final double PERCENT_MAX = 100.0;
 
-    public static final String INFO_PANEL_LABEL_TEXT = "Displaying data for:";
+    public static final String INFO_PANEL_LABEL_TEXT = "Displaying data for: ";
     public static final String INPUT_LABEL_TEXT = "Specify ISO code: ";
     public static final String DISPLAY_CHART_BUTTON_TEXT = "Display chart";
 }

@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import se.robert.app.api.ApiClient;
 import se.robert.app.models.exceptions.ModelException;
+import se.robert.app.records.CountryDataSet;
 import se.robert.app.records.YearData;
 import se.robert.app.utilities.AppConfig;
 
@@ -104,7 +105,7 @@ public class Model {
         return selection;
     }
 
-    public LinkedList<YearData> generateDataSet(String countryISO) throws ModelException {
+    public CountryDataSet generateDataSet(String countryISO) throws ModelException {
         if (root == null) {
             try {
                 loadJsonData();
@@ -122,7 +123,8 @@ public class Model {
             throw new ModelException("The specified ISO code was not found.");
         }
 
-        LinkedList<YearData> currentDataSet = new LinkedList<>();
+
+        LinkedList<YearData> dataList = new LinkedList<>();
 
         Map<String, Integer> selection = baseSelectionWithCountry(countryISO);
         Map<String, Integer> dimensionSizes = getDimensionSizes();
@@ -140,9 +142,9 @@ public class Model {
             int femaleIndex = flatIndexFor(selection, dimensionSizes);
             float femaleValue = getValue(Integer.toString(femaleIndex), root);
 
-            currentDataSet.add(new YearData(Integer.parseInt(key), maleValue, femaleValue));
+            dataList.add(new YearData(Integer.parseInt(key), maleValue, femaleValue));
         });
-        return currentDataSet;
+        return new CountryDataSet(dataList, getCurrentCountryName(countryISO));
     }
 
     private int flatIndexFor(Map<String, Integer> selection, Map<String, Integer> dimensionSizes) {
@@ -189,7 +191,12 @@ public class Model {
         return e.getAsFloat();
     }
 
-    public String getCurrentCountryName() {
-        return "";
+    public String getCurrentCountryName(String countryISO) {
+        return root
+                .getAsJsonObject(AppConfig.DIMENSION_MEMBER_NAME)
+                .getAsJsonObject(AppConfig.GEO_MEMBER_NAME)
+                .getAsJsonObject(AppConfig.CATEGORY_MEMBER_NAME)
+                .getAsJsonObject("label")
+                .get(countryISO).getAsString();
     }
 }

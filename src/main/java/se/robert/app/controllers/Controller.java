@@ -3,11 +3,11 @@ package se.robert.app.controllers;
 import se.robert.app.api.ApiClient;
 import se.robert.app.models.Model;
 import se.robert.app.models.exceptions.ModelException;
-import se.robert.app.records.YearData;
+import se.robert.app.records.CountryDataSet;
+import se.robert.app.utilities.AppConfig;
 import se.robert.app.views.View;
 
 import javax.swing.SwingWorker;
-import java.util.LinkedList;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
@@ -33,26 +33,29 @@ public class Controller {
                 .getText()
                 .toUpperCase(Locale.ROOT);
 
-        view.getLeftPanel().getInfoPanel().getCountryLabel().setText("Loading...");
 
-        SwingWorker<LinkedList<YearData>, Void> worker = new SwingWorker<>() {
+
+        view.getLeftPanel().getInfoPanel().getInfoLabel().setText("Loading...");
+
+        SwingWorker<CountryDataSet, Void> worker = new SwingWorker<>() {
 
             @Override
-            protected LinkedList<YearData> doInBackground() throws Exception {
+            protected CountryDataSet doInBackground() throws Exception {
                 return model.generateDataSet(input);
             }
 
             @Override
             protected void done() {
                 try {
-                    LinkedList<YearData> data = get();
+                    CountryDataSet data = get();
+
 
                     view.getLeftPanel()
                             .getInfoPanel()
-                            .getCountryLabel()
-                            .setText(model.getCurrentCountryName());
+                            .getInfoLabel()
+                            .setText(AppConfig.INFO_PANEL_LABEL_TEXT + model.getCurrentCountryName(input.toUpperCase(Locale.ROOT)));
 
-                    view.showData(data);
+                    view.showData(data.data());
 
                 } catch (ExecutionException e) {
                     Throwable cause = e.getCause();
@@ -68,8 +71,7 @@ public class Controller {
 
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                } finally {
-                    view.getLeftPanel().getInfoPanel().getCountryLabel().setText("");
+                    view.getLeftPanel().getInfoPanel().getInfoLabel().setText("");
                 }
             }
         };

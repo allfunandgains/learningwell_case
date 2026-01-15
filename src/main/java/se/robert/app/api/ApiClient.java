@@ -23,8 +23,6 @@ public class ApiClient {
                 throw new IOException("Bad Request");
             }
             return response.body();
-
-
     }
 
 
