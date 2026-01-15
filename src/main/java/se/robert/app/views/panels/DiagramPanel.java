@@ -1,6 +1,7 @@
 package se.robert.app.views.panels;
 
 import se.robert.app.records.YearData;
+import se.robert.app.utilities.AppConfig;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -70,7 +71,7 @@ public class DiagramPanel extends JPanel {
             columnsPanel.add(column);
 
             if (i < sorted.size() - 1) {
-                columnsPanel.add(Box.createHorizontalStrut(12));
+                columnsPanel.add(Box.createHorizontalStrut(AppConfig.YEAR_BAR_PANEL_DISTANCE));
             }
         }
 

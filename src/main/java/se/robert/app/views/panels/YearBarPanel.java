@@ -19,7 +19,6 @@ import java.awt.Graphics2D;
  */
 public class YearBarPanel extends JPanel {
 
-
     /** Percentage value for males (0–100). */
     private final double male;
 
@@ -47,6 +46,7 @@ public class YearBarPanel extends JPanel {
 
         yearLabel = new JLabel(String.valueOf(year), SwingConstants.CENTER);
         yearLabel.setFont(AppConfig.YEAR_LABEL_FONT);
+        yearLabel.setPreferredSize(new Dimension(width, AppConfig.YEAR_LABEL_HEIGHT));
         add(yearLabel, BorderLayout.SOUTH);
     }
 
