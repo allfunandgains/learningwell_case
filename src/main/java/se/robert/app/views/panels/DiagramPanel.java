@@ -41,6 +41,7 @@ public class DiagramPanel extends JPanel {
     /**
      * Updates the chart with new data.
      * Call this from the EDT (Swing thread).
+     * @param data A list of YearData objects.
      */
     public void setData(List<YearData> data) {
         columnsPanel.removeAll();

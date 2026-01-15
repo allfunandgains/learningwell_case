@@ -1,5 +1,6 @@
 package se.robert.app.utilities;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.util.List;
 
@@ -17,6 +18,10 @@ public final class AppConfig {
 
     public static final Font STANDARD_FONT = new Font("Segoe UI", Font.BOLD, 16);
     public static final Font YEAR_LABEL_FONT = new Font("Segoe UI", Font.PLAIN, 11);
+
+    public static final Color MALE_BAR_COLOR = new Color(80, 140, 220);
+    public static final Color FEMALE_BAR_COLOR = new Color(220, 120, 160);
+
     public static final int INFO_PANEL_WIDTH = 300;
     public static final int INFO_PANEL_HEIGHT = 250;
     public static final int INPUT_PANEL_WIDTH = 300;
