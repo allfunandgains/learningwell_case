@@ -82,8 +82,8 @@ public class YearBarPanel extends JPanel {
 
             int usableH = Math.max(1, h - AppConfig.PADDING_TOP - AppConfig.PADDING_BOTTOM);
 
-            int gap = Math.max(4, w / 10);
-            int barW = Math.max(6, (w - gap) / 2);
+            int gap = Math.max(AppConfig.YEAR_BAR_MIN_GAP, w / 10);
+            int barW = Math.max(AppConfig.YEAR_BAR_MIN_WIDTH, (w - gap) / 2);
 
             double maleRatio = clamp01(male / 100.0);
             double femaleRatio = clamp01(female / 100.0);

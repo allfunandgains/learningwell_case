@@ -64,6 +64,8 @@ public final class AppConfig {
     public static final int COLUMN_BORDER_SIZE = 12;
     public static final int RIGHT_PANEL_PREFERRED_WIDTH = 700;
     public static final int RIGHT_PANEL_PREFERRED_HEIGHT = 500;
+    public static final int YEAR_BAR_MIN_GAP = 4;
+    public static final int YEAR_BAR_MIN_WIDTH = 6;
 
     public static final int YEAR_BAR_PANEL_DISTANCE = 16;
 
