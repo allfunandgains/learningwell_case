@@ -23,7 +23,7 @@ public class DiagramPanel extends JPanel {
 
 
     public DiagramPanel() {
-        this(64, 220);
+        this(AppConfig.DEFAULT_COLUMN_WIDTH, AppConfig.DEFAULT_CHART_HEIGHT);
     }
 
     public DiagramPanel(int columnWidth, int chartHeight) {
@@ -33,7 +33,7 @@ public class DiagramPanel extends JPanel {
         setLayout(new BorderLayout());
 
         columnsPanel = new JPanel();
-        columnsPanel.setBorder(new EmptyBorder(0, 12, 0, 12));
+        columnsPanel.setBorder(new EmptyBorder(0, AppConfig.COLUMN_BORDER_SIZE, 0, AppConfig.COLUMN_BORDER_SIZE));
         columnsPanel.setLayout(new BoxLayout(columnsPanel, BoxLayout.X_AXIS));
 
         add(columnsPanel, BorderLayout.CENTER);

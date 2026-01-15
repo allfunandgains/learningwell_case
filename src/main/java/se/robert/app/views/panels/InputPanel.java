@@ -22,11 +22,11 @@ public class InputPanel extends JPanel {
 
 
 
-        inputLabel = new javax.swing.JLabel("Specify ISO code: ");
+        inputLabel = new javax.swing.JLabel(AppConfig.INPUT_LABEL_TEXT);
         inputLabel.setFont(AppConfig.STANDARD_FONT);
 
         inputLabel.setLabelFor(inputField);
-        displayButton = new javax.swing.JButton("Display chart");
+        displayButton = new javax.swing.JButton(AppConfig.DISPLAY_CHART_BUTTON_TEXT);
         displayButton.setFont(AppConfig.STANDARD_FONT);
 
 

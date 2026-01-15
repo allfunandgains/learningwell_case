@@ -1,6 +1,7 @@
 package se.robert.app.views.panels;
 
 import se.robert.app.records.YearData;
+import se.robert.app.utilities.AppConfig;
 
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
@@ -15,7 +16,7 @@ public class RightPanel extends JPanel {
 
     DiagramPanel diagramPanel;
     public RightPanel() {
-        setPreferredSize(new Dimension(700, 500));
+        setPreferredSize(new Dimension(AppConfig.RIGHT_PANEL_PREFERRED_WIDTH, AppConfig.RIGHT_PANEL_PREFERRED_HEIGHT));
         setBackground(Color.DARK_GRAY);
         setLayout(new BorderLayout());
 
