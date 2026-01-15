@@ -44,6 +44,14 @@ public class YearBarPanel extends JPanel {
         setPreferredSize(new Dimension(width, height));
         setOpaque(false);
 
+        setToolTipText(
+                "<html>" +
+                        "<b>" + year + "</b><br>" +
+                        "Male: " + String.format("%.1f", male) + "%<br>" +
+                        "Female: " + String.format("%.1f", female) + "%" +
+                        "</html>"
+        );
+
         yearLabel = new JLabel(String.valueOf(year), SwingConstants.CENTER);
         yearLabel.setFont(AppConfig.YEAR_LABEL_FONT);
         yearLabel.setPreferredSize(new Dimension(width, AppConfig.YEAR_LABEL_HEIGHT));
