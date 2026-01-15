@@ -5,9 +5,11 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import se.robert.app.api.ApiClient;
+import se.robert.app.models.exceptions.ModelException;
 import se.robert.app.records.YearData;
 import se.robert.app.utilities.AppConfig;
 
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -27,16 +29,13 @@ public class Model {
     private JsonObject root;
 
     public Model(ApiClient client) {
-
         this.apiClient = client;
-
-        loadJsonData();
     }
 
     /**
      * Attempts to fetch and parse the data into the root field.
      */
-    private void loadJsonData() {
+    private void loadJsonData() throws IOException, InterruptedException {
         String jsonData = apiClient.getData(AppConfig.API_ADDRESS);
         root = JsonParser.parseString(jsonData).getAsJsonObject();
     }
@@ -69,18 +68,16 @@ public class Model {
                 .getAsInt();
     }
 
-    private LinkedHashMap<String, Integer> getDimensionSizes() {
+    private LinkedHashMap<String, Integer> getDimensionSizes() throws ModelException {
         if (root == null) {
-            System.err.println("root is null.");
-            return null;
+            throw new ModelException("Root object is null");
         }
 
         JsonArray dimensionIDs = root.get(AppConfig.ID_MEMBER_NAME).getAsJsonArray();
         JsonArray sizes = root.get(AppConfig.SIZE_MEMBER_NAME).getAsJsonArray();
 
         if (dimensionIDs.size() != sizes.size()) {
-            System.err.println("dimensionIDs size != sizes.");
-            return null;
+           throw new ModelException("DimensionIds and dimension sizes lists differ in length.");
         }
 
         LinkedHashMap<String, Integer> dimensionSizes = new LinkedHashMap<>();
@@ -107,8 +104,14 @@ public class Model {
         return selection;
     }
 
-    public LinkedList<YearData> generateDataSet(String countryISO) {
-
+    public LinkedList<YearData> generateDataSet(String countryISO) throws ModelException {
+        if (root == null) {
+            try {
+                loadJsonData();
+            } catch (IOException | InterruptedException e) {
+                throw new ModelException("An error occurred while downloading data.");
+            }
+        }
         JsonObject geoIndex = root
                 .getAsJsonObject(AppConfig.DIMENSION_MEMBER_NAME)
                 .getAsJsonObject(AppConfig.GEO_MEMBER_NAME)
@@ -116,9 +119,7 @@ public class Model {
                 .getAsJsonObject(AppConfig.INDEX_MEMBER_NAME);
 
         if (!geoIndex.has(countryISO)) {
-            System.err.println("geoIndex has not been set.");
-            // TODO: add error dialog
-            return null;
+            throw new ModelException("The specified ISO code was not found.");
         }
 
         LinkedList<YearData> currentDataSet = new LinkedList<>();
@@ -186,5 +187,9 @@ public class Model {
             return Float.NaN;
         }
         return e.getAsFloat();
+    }
+
+    public String getCurrentCountryName() {
+        return "";
     }
 }

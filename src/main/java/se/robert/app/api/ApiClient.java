@@ -15,20 +15,16 @@ public class ApiClient {
 
     HttpClient client = HttpClient.newHttpClient();
 
-    public String getData(String url) {
-        try {
+    public String getData(String url) throws IOException, InterruptedException {
+
             HttpRequest request = HttpRequest.newBuilder(URI.create(url)).build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
             if (response.statusCode() >= 400) {
                 throw new IOException("Bad Request");
             }
             return response.body();
 
-        } catch (IOException | InterruptedException e) {
-           System.out.println(e.getMessage());
-        }
-        return null;
+
     }
 
 

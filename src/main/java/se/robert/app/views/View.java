@@ -6,6 +6,7 @@ import se.robert.app.views.panels.LeftPanel;
 import se.robert.app.views.panels.RightPanel;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import java.awt.FlowLayout;
 import java.util.LinkedList;
 
@@ -22,7 +23,7 @@ public class View extends JFrame {
     RightPanel rightPanel;
 
     /**
-     * Contructor for the View class.
+     * Constructor for the View class.
      */
     public View() {
         initUI();
@@ -61,5 +62,9 @@ public class View extends JFrame {
     public void showData(LinkedList<YearData> data) {
         System.out.println("showData from View");
         rightPanel.setData(data);
+    }
+
+    public void showInfoDialog(String title, String message) {
+        JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
 }
