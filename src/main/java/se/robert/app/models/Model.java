@@ -48,7 +48,7 @@ public class Model {
      */
     private float getValue(String key) {
         return root
-                .getAsJsonObject("value")
+                .getAsJsonObject(AppConfig.VALUE_MEMBER_NAME)
                 .get(key).getAsFloat();
     }
 
@@ -61,10 +61,10 @@ public class Model {
      * @return Integer value for the specific data point.
      */
     private int getSpecificDimensionData(JsonObject root, String dimension, String key) {
-        return root.getAsJsonObject("dimension")
+        return root.getAsJsonObject(AppConfig.DIMENSION_MEMBER_NAME)
                 .getAsJsonObject(dimension)
-                .getAsJsonObject("category")
-                .getAsJsonObject("index")
+                .getAsJsonObject(AppConfig.CATEGORY_MEMBER_NAME)
+                .getAsJsonObject(AppConfig.INDEX_MEMBER_NAME)
                 .get(key)
                 .getAsInt();
     }
@@ -75,8 +75,8 @@ public class Model {
             return null;
         }
 
-        JsonArray dimensionIDs = root.get("id").getAsJsonArray();
-        JsonArray sizes = root.get("size").getAsJsonArray();
+        JsonArray dimensionIDs = root.get(AppConfig.ID_MEMBER_NAME).getAsJsonArray();
+        JsonArray sizes = root.get(AppConfig.SIZE_MEMBER_NAME).getAsJsonArray();
 
         if (dimensionIDs.size() != sizes.size()) {
             System.err.println("dimensionIDs size != sizes.");
@@ -93,27 +93,27 @@ public class Model {
 
     private Map<String, Integer> baseSelection() {
         Map<String, Integer> m = new HashMap<>();
-        m.put("FREQ", getSpecificDimensionData(root, "FREQ", "A"));
-        m.put("UNIT", getSpecificDimensionData(root, "UNIT", "RT"));
-        m.put("AGE",  getSpecificDimensionData(root, "AGE", "TOTAL"));
-        m.put("REGIS_ES", getSpecificDimensionData(root, "REGIS_ES", "REG_UNE"));
-        m.put("LMP_TYPE", getSpecificDimensionData(root, "LMP_TYPE", "TOT2_7"));
+        m.put(AppConfig.FREQ_MEMBER_NAME, getSpecificDimensionData(root, AppConfig.FREQ_MEMBER_NAME, AppConfig.FREQUENCY_ANNUAL_INDEX_VALUE));
+        m.put(AppConfig.UNIT_MEMBER_NAME, getSpecificDimensionData(root, AppConfig.UNIT_MEMBER_NAME, AppConfig.UNIT_RATE_INDEX_VALUE));
+        m.put(AppConfig.AGE_MEMBER_NAME,  getSpecificDimensionData(root, AppConfig.AGE_MEMBER_NAME, AppConfig.AGE_INDEX_TOTAL));
+        m.put(AppConfig.REGIS_ES_MEMBER_NAME, getSpecificDimensionData(root, AppConfig.REGIS_ES_MEMBER_NAME, AppConfig.REGISTERED_UNEMPLOYED_INDEX_VALUE));
+        m.put(AppConfig.LMP_TYPE_MEMBER_NAME, getSpecificDimensionData(root, AppConfig.LMP_TYPE_MEMBER_NAME, AppConfig.LMP_TYPE_TOTAL_INDEX_VALUE));
         return m;
     }
 
     private Map<String, Integer> baseSelectionWithCountry(String countryISO) {
         Map<String, Integer> selection = baseSelection();
-        selection.put("GEO",  getSpecificDimensionData(root, "GEO", countryISO));
+        selection.put(AppConfig.GEO_MEMBER_NAME,  getSpecificDimensionData(root, AppConfig.GEO_MEMBER_NAME, countryISO));
         return selection;
     }
 
     public LinkedList<YearData> generateDataSet(String countryISO) {
 
         JsonObject geoIndex = root
-                .getAsJsonObject("dimension")
-                .getAsJsonObject("GEO")
-                .getAsJsonObject("category")
-                .getAsJsonObject("index");
+                .getAsJsonObject(AppConfig.DIMENSION_MEMBER_NAME)
+                .getAsJsonObject(AppConfig.GEO_MEMBER_NAME)
+                .getAsJsonObject(AppConfig.CATEGORY_MEMBER_NAME)
+                .getAsJsonObject(AppConfig.INDEX_MEMBER_NAME);
 
         if (!geoIndex.has(countryISO)) {
             System.err.println("geoIndex has not been set.");
@@ -128,13 +128,13 @@ public class Model {
         LinkedHashMap<String, Integer> years = getYearsMap();
 
         years.forEach((key, year) -> {
-            selection.put("TIME_PERIOD", year);
-            selection.put("SEX", 1);
+            selection.put(AppConfig.TIME_PERIOD_KEY, year);
+            selection.put(AppConfig.SEX_KEY, AppConfig.SEX_MALE_VALUE);
 
             int maleIndex = flatIndexFor(selection, dimensionSizes);
             float maleValue = getValue(Integer.toString(maleIndex), root);
 
-            selection.put("SEX", 2);
+            selection.put(AppConfig.SEX_KEY, AppConfig.SEX_FEMALE_VALUE);
 
             int femaleIndex = flatIndexFor(selection, dimensionSizes);
             float femaleValue = getValue(Integer.toString(femaleIndex), root);
@@ -160,10 +160,10 @@ public class Model {
         LinkedHashMap<String, Integer> years = new LinkedHashMap<>();
 
         JsonObject yearIndex = root
-                .getAsJsonObject("dimension")
-                .getAsJsonObject("TIME_PERIOD")
-                .getAsJsonObject("category")
-                .getAsJsonObject("index");
+                .getAsJsonObject(AppConfig.DIMENSION_MEMBER_NAME)
+                .getAsJsonObject(AppConfig.TIME_PERIOD_MEMBER_NAME)
+                .getAsJsonObject(AppConfig.CATEGORY_MEMBER_NAME)
+                .getAsJsonObject(AppConfig.INDEX_MEMBER_NAME);
 
         yearIndex.entrySet().stream()
                 .sorted(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())))
@@ -181,13 +181,10 @@ public class Model {
     }
 
     private float getValue(String key, JsonObject root) {
-        JsonElement e = root.getAsJsonObject("value").get(key);
+        JsonElement e = root.getAsJsonObject(AppConfig.VALUE_MEMBER_NAME).get(key);
         if (e == null || e.isJsonNull()) {
             return Float.NaN;
         }
-
         return e.getAsFloat();
     }
-
-
 }
