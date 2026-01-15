@@ -80,8 +80,6 @@ public class DiagramPanel extends JPanel {
     }
 
     private JComponent createEmptyStateLabel() {
-        JLabel label = new JLabel("No data to display", SwingConstants.CENTER);
-        label.setBorder(new EmptyBorder(24, 24, 24, 24));
-        return label;
+        return new JLabel("No data to display", SwingConstants.CENTER);
     }
 }
