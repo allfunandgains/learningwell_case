@@ -33,7 +33,7 @@ public class DiagramPanel extends JPanel {
         setLayout(new BorderLayout());
 
         columnsPanel = new JPanel();
-        columnsPanel.setBorder(new EmptyBorder(12, 12, 12, 12));
+        columnsPanel.setBorder(new EmptyBorder(0, 12, 0, 12));
         columnsPanel.setLayout(new BoxLayout(columnsPanel, BoxLayout.X_AXIS));
 
         add(columnsPanel, BorderLayout.CENTER);

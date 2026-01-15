@@ -22,6 +22,8 @@ public final class AppConfig {
     public static final Color MALE_BAR_COLOR = new Color(80, 140, 220);
     public static final Color FEMALE_BAR_COLOR = new Color(220, 120, 160);
     public static final int YEAR_LABEL_HEIGHT = 15;
+    public static final int PADDING_TOP = 8;
+    public static final int PADDING_BOTTOM = 8;
 
     public static final int YEAR_BAR_PANEL_DISTANCE = 16;
 

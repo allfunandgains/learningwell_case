@@ -6,7 +6,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -55,6 +54,8 @@ public class YearBarPanel extends JPanel {
         yearLabel = new JLabel(String.valueOf(year), SwingConstants.CENTER);
         yearLabel.setFont(AppConfig.YEAR_LABEL_FONT);
         yearLabel.setPreferredSize(new Dimension(width, AppConfig.YEAR_LABEL_HEIGHT));
+        yearLabel.setMinimumSize(new Dimension(width, AppConfig.YEAR_LABEL_HEIGHT));
+        yearLabel.setMaximumSize(new Dimension(width, AppConfig.YEAR_LABEL_HEIGHT));
         add(yearLabel, BorderLayout.SOUTH);
     }
 
@@ -72,15 +73,14 @@ public class YearBarPanel extends JPanel {
         Graphics2D g2 = (Graphics2D) g.create();
 
         try {
-            int labelH = yearLabel.getHeight();
+            int labelH = AppConfig.YEAR_LABEL_HEIGHT;
             int w = this.getWidth();
             int h = this.getHeight() - labelH;
 
             if (h <= 0) return;
 
-            int paddingTop = 8;
-            int paddingBottom = 8;
-            int usableH = Math.max(1, h - paddingTop - paddingBottom);
+
+            int usableH = Math.max(1, h - AppConfig.PADDING_TOP - AppConfig.PADDING_BOTTOM);
 
             int gap = Math.max(4, w / 10);
             int barW = Math.max(6, (w - gap) / 2);
@@ -94,7 +94,7 @@ public class YearBarPanel extends JPanel {
             int xMale = 0;
             int xFemale = barW + gap;
 
-            int baseY = paddingTop + usableH;
+            int baseY = AppConfig.PADDING_TOP + usableH;
             int yMale = baseY - maleH;
             int yFemale = baseY - femaleH;
 
