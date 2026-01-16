@@ -42,17 +42,6 @@ public class Model {
     }
 
     /**
-     * Returns the value corresponding to a certain index key.
-     * @param key The index key string.
-     * @return Integer value representing the specific data point.
-     */
-    private float getValue(String key) {
-        return root
-                .getAsJsonObject(AppConfig.VALUE_MEMBER_NAME)
-                .get(key).getAsFloat();
-    }
-
-    /**
      * Helper method for retrieving specific dimensions data
      * from the JSON-stat response.
      * @param root The JSON Object containing the data.
