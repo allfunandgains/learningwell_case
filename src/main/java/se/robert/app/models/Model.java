@@ -29,6 +29,9 @@ public class Model {
     private final ApiClient apiClient;
     private JsonObject root;
 
+    private Map<String, Integer> dimensionSizes;
+    private  LinkedHashMap<String, Integer> years;
+
     public Model(ApiClient client) {
         this.apiClient = client;
     }
@@ -36,9 +39,11 @@ public class Model {
     /**
      * Attempts to fetch and parse the data into the root field.
      */
-    private void loadJsonData() throws IOException, InterruptedException {
+    private void loadJsonData() throws IOException, InterruptedException, ModelException {
         String jsonData = apiClient.getData(AppConfig.API_ADDRESS);
         root = JsonParser.parseString(jsonData).getAsJsonObject();
+        dimensionSizes = buildDimensionSizes();
+        years = getYearsMap();
     }
 
     /**
@@ -58,9 +63,9 @@ public class Model {
                 .getAsInt();
     }
 
-    private LinkedHashMap<String, Integer> getDimensionSizes() throws ModelException {
+    private LinkedHashMap<String, Integer> buildDimensionSizes() throws ModelException {
         if (root == null) {
-            throw new ModelException("Root object is null");
+            throw new ModelException("Root object is null.");
         }
 
         JsonArray dimensionIDs = root.get(AppConfig.ID_MEMBER_NAME).getAsJsonArray();
@@ -98,7 +103,7 @@ public class Model {
         if (root == null) {
             try {
                 loadJsonData();
-            } catch (IOException | InterruptedException e) {
+            } catch (IOException | InterruptedException | ModelException e) {
                 throw new ModelException("An error occurred while downloading data.");
             }
         }
@@ -116,8 +121,6 @@ public class Model {
         LinkedList<YearData> dataList = new LinkedList<>();
 
         Map<String, Integer> selection = baseSelectionWithCountry(countryISO);
-        Map<String, Integer> dimensionSizes = getDimensionSizes();
-        LinkedHashMap<String, Integer> years = getYearsMap();
 
         years.forEach((key, year) -> {
             selection.put(AppConfig.TIME_PERIOD_KEY, year);
