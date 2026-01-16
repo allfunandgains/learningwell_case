@@ -30,14 +30,14 @@ public class YearBarPanel extends JPanel {
     /**
      * Constructs a {@code YearBarPanel} for a specific year and its associated values.
      * @param year   the year to display as a label
-     * @param male   male percentage value (0–100)
-     * @param female female percentage value (0–100)
+     * @param maleValue   male percentage value (0–100)
+     * @param femaleValue female percentage value (0–100)
      * @param width  preferred width of the panel
      * @param height preferred height of the panel
      */
-    public YearBarPanel(int year, double male, double female, int width, int height) {
-        this.male = male;
-        this.female = female;
+    public YearBarPanel(int year, double maleValue, double femaleValue, int width, int height) {
+        this.male = maleValue;
+        this.female = femaleValue;
 
         setLayout(new BorderLayout());
         setPreferredSize(new Dimension(width, height));
@@ -46,8 +46,8 @@ public class YearBarPanel extends JPanel {
         setToolTipText(
                 "<html>" +
                         "<b>" + year + "</b><br>" +
-                        "Male: " + String.format("%.1f", male) + "%<br>" +
-                        "Female: " + String.format("%.1f", female) + "%" +
+                        "Male: " + String.format("%.1f", maleValue) + "%<br>" +
+                        "Female: " + String.format("%.1f", femaleValue) + "%" +
                         "</html>"
         );
 
@@ -77,8 +77,9 @@ public class YearBarPanel extends JPanel {
             int w = this.getWidth();
             int h = this.getHeight() - labelH;
 
-            if (h <= 0) return;
-
+            if (h <= 0) {
+                return;
+            }
 
             int usableH = Math.max(1, h - AppConfig.PADDING_TOP - AppConfig.PADDING_BOTTOM);
 

@@ -175,16 +175,16 @@ public class Model {
     /**
      * Calculates the row-major ordering index for a multidimensional selection.
      * @param selection map of dimension member names to indices.
-     * @param dimensionSizes map of dimension names to sizes.
+     * @param dimensionSizesMap map of dimension names to sizes.
      * @return a flattened index for the specified selection.
      */
-    private int flatIndexFor(Map<String, Integer> selection, Map<String, Integer> dimensionSizes) {
+    private int flatIndexFor(Map<String, Integer> selection, Map<String, Integer> dimensionSizesMap) {
         List<Integer> indices = AppConfig.DIMENSION_ORDER.stream()
                 .map(selection::get)
                 .toList();
 
         List<Integer> sizes = AppConfig.DIMENSION_ORDER.stream()
-                .map(dimensionSizes::get)
+                .map(dimensionSizesMap::get)
                 .toList();
 
         return calculateFlatIndex(indices, sizes);
@@ -195,7 +195,7 @@ public class Model {
      * @return an ordered mapping of years to indices.
      */
     private LinkedHashMap<String, Integer> buildYearsMap() {
-        LinkedHashMap<String, Integer> years = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> yearsMap = new LinkedHashMap<>();
 
         JsonObject yearIndex = root
                 .getAsJsonObject(AppConfig.DIMENSION_MEMBER_NAME)
@@ -205,9 +205,9 @@ public class Model {
 
         yearIndex.entrySet().stream()
                 .sorted(Comparator.comparingInt(e -> Integer.parseInt(e.getKey())))
-                .forEach(e -> years.put(e.getKey(), e.getValue().getAsInt()));
+                .forEach(e -> yearsMap.put(e.getKey(), e.getValue().getAsInt()));
 
-        return years;
+        return yearsMap;
     }
 
     /**
@@ -227,11 +227,11 @@ public class Model {
     /**
      * Retrieves a value from the JSON value array corresponding to the specified index key.
      * @param key the row-major order key.
-     * @param root the root JSON object.
+     * @param rootObject the rootObject JSON object.
      * @return the value, or NaN if missing.
      */
-    private float getValue(String key, JsonObject root) {
-        JsonElement e = root.getAsJsonObject(AppConfig.VALUE_MEMBER_NAME).get(key);
+    private float getValue(String key, JsonObject rootObject) {
+        JsonElement e = rootObject.getAsJsonObject(AppConfig.VALUE_MEMBER_NAME).get(key);
         if (e == null || e.isJsonNull()) {
             return Float.NaN;
         }
