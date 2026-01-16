@@ -11,12 +11,16 @@ import java.awt.Dimension;
  */
 public class InfoPanel extends JPanel {
 
-    JLabel infoLabel;
-    GenderLegendPanel genderLegendPanel;
+    /** JLabel for displaying information to the user. */
+    private final JLabel infoLabel;
+
+    /**
+     * Constructs the panel and set up the GUI components.
+     */
     public InfoPanel() {
         infoLabel = new JLabel();
         infoLabel.setFont(AppConfig.STANDARD_FONT);
-        this.setPreferredSize(new Dimension(AppConfig.INFO_PANEL_WIDTH,AppConfig.INFO_PANEL_HEIGHT));
+        this.setPreferredSize(new Dimension(AppConfig.INFO_PANEL_WIDTH, AppConfig.INFO_PANEL_HEIGHT));
 
         this.add(infoLabel);
     }
@@ -33,7 +37,7 @@ public class InfoPanel extends JPanel {
      * Creates and adds a GenderLegendPanel object to this JPanel.
      */
     public void showLegendPanel() {
-        genderLegendPanel = new GenderLegendPanel();
+        GenderLegendPanel genderLegendPanel = new GenderLegendPanel();
         this.add(genderLegendPanel);
     }
 }

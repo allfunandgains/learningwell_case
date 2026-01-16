@@ -15,13 +15,10 @@ import javax.swing.JTextField;
 public class InputPanel extends JPanel {
 
     /** Text field used for user input. */
-    JTextField inputField;
-
-    /** Label describing the purpose of the input field. */
-    JLabel inputLabel;
+    private final JTextField inputField;
 
     /** Button used to trigger chart or data display. */
-    JButton displayButton;
+    private final JButton displayButton;
 
     /**
      * Constructs the panel and initializes UI components.
@@ -30,10 +27,10 @@ public class InputPanel extends JPanel {
         this.setPreferredSize(new java.awt.Dimension(AppConfig.INPUT_PANEL_WIDTH, AppConfig.INPUT_PANEL_HEIGHT));
         this.setLayout(new java.awt.FlowLayout());
 
-        inputField = new javax.swing.JTextField( AppConfig.INPUT_FIELD_COLUMNS);
+        inputField = new javax.swing.JTextField(AppConfig.INPUT_FIELD_COLUMNS);
         inputField.setFont(AppConfig.STANDARD_FONT);
 
-        inputLabel = new javax.swing.JLabel(AppConfig.INPUT_LABEL_TEXT);
+        JLabel inputLabel = new JLabel(AppConfig.INPUT_LABEL_TEXT);
         inputLabel.setFont(AppConfig.STANDARD_FONT);
         inputLabel.setLabelFor(inputField);
 

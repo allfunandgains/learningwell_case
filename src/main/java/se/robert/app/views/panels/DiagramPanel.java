@@ -24,8 +24,13 @@ import java.util.List;
  */
 public class DiagramPanel extends JPanel {
 
+    /** JPanel for displaying year-wise data. */
     private final JPanel columnsPanel;
+
+    /** The width of each year column. */
     private final int columnWidth;
+
+    /** The usable height of the chart. */
     private final int chartHeight;
 
     /**
@@ -39,12 +44,12 @@ public class DiagramPanel extends JPanel {
     /**
      * Overloads the basic constructor, allowing specific size specification
      * for columns.
-     * @param columnWidth the column width in pixels.
-     * @param chartHeight the column height in pixels.
+     * @param columnWidthValue the column width in pixels.
+     * @param chartHeightValue the column height in pixels.
      */
-    public DiagramPanel(int columnWidth, int chartHeight) {
-        this.columnWidth = columnWidth;
-        this.chartHeight = chartHeight;
+    public DiagramPanel(int columnWidthValue, int chartHeightValue) {
+        this.columnWidth = columnWidthValue;
+        this.chartHeight = chartHeightValue;
 
         setLayout(new BorderLayout());
 
