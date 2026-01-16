@@ -9,7 +9,7 @@ import javax.swing.SwingUtilities;
  * @author Robert Kullman
  */
 public class Main {
-    static void main() {
+    public static void main(String[] args) {
         SwingUtilities.invokeLater(Controller::new);
     }
 }

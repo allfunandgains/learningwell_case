@@ -132,12 +132,12 @@ public class Model {
 
         years.forEach((key, year) -> {
             selection.put(AppConfig.TIME_PERIOD_KEY, year);
-            selection.put(AppConfig.SEX_KEY, AppConfig.SEX_MALE_VALUE);
+            selection.put(AppConfig.SEX_MEMBER_NAME, AppConfig.SEX_MALE_VALUE);
 
             int maleIndex = flatIndexFor(selection, dimensionSizes);
             float maleValue = getValue(Integer.toString(maleIndex), root);
 
-            selection.put(AppConfig.SEX_KEY, AppConfig.SEX_FEMALE_VALUE);
+            selection.put(AppConfig.SEX_MEMBER_NAME, AppConfig.SEX_FEMALE_VALUE);
 
             int femaleIndex = flatIndexFor(selection, dimensionSizes);
             float femaleValue = getValue(Integer.toString(femaleIndex), root);
