@@ -20,15 +20,12 @@ public class InputPanel extends JPanel {
         inputField = new javax.swing.JTextField( AppConfig.INPUT_FIELD_COLUMNS);
         inputField.setFont(AppConfig.STANDARD_FONT);
 
-
-
         inputLabel = new javax.swing.JLabel(AppConfig.INPUT_LABEL_TEXT);
         inputLabel.setFont(AppConfig.STANDARD_FONT);
-
         inputLabel.setLabelFor(inputField);
+
         displayButton = new javax.swing.JButton(AppConfig.DISPLAY_CHART_BUTTON_TEXT);
         displayButton.setFont(AppConfig.STANDARD_FONT);
-
 
         this.add(inputLabel);
         this.add(inputField);
