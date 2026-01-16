@@ -26,7 +26,6 @@ public final class AppConfig {
     public static final Color SCALE_BAR_COLOR = new Color(255, 255, 255, 200);
 
     // Data retrieval identifiers
-    public static final String VIEW_TITLE = "Activation of registered unemployed";
     public static final String DIMENSION_MEMBER_NAME = "dimension";
     public static final String TIME_PERIOD_MEMBER_NAME = "TIME_PERIOD";
     public static final String CATEGORY_MEMBER_NAME = "category";
@@ -66,18 +65,16 @@ public final class AppConfig {
     public static final int RIGHT_PANEL_PREFERRED_HEIGHT = 500;
     public static final int YEAR_BAR_MIN_GAP = 4;
     public static final int YEAR_BAR_MIN_WIDTH = 6;
-
     public static final int YEAR_BAR_PANEL_DISTANCE = 16;
-
     public static final int SCALE_BAR_WIDTH = 60;
-
     public static final int INFO_PANEL_WIDTH = 300;
     public static final int INFO_PANEL_HEIGHT = 250;
     public static final int INPUT_PANEL_WIDTH = 300;
     public static final int INPUT_PANEL_HEIGHT = 250;
     public static final int INPUT_FIELD_COLUMNS = 10;
-    public static final double PERCENT_MAX = 100.0;
 
+    // String constants
+    public static final String VIEW_TITLE = "Activation of registered unemployed";
     public static final String INFO_PANEL_LABEL_TEXT = "Displaying data for: ";
     public static final String INPUT_LABEL_TEXT = "Specify ISO code: ";
     public static final String DISPLAY_CHART_BUTTON_TEXT = "Display chart";
