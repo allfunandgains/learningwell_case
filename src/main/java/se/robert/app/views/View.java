@@ -60,6 +60,7 @@ public class View extends JFrame {
     }
 
     public void showData(LinkedList<YearData> data) {
+        leftPanel.getInfoPanel().showLegendPanel();
         rightPanel.setData(data);
     }
 

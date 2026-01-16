@@ -6,10 +6,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import java.awt.Dimension;
 
+/**
+ * A JPanel used to display information and a chart legend to the user.
+ */
 public class InfoPanel extends JPanel {
 
     JLabel infoLabel;
-
+    GenderLegendPanel genderLegendPanel;
     public InfoPanel() {
         infoLabel = new JLabel();
         infoLabel.setFont(AppConfig.STANDARD_FONT);
@@ -18,7 +21,19 @@ public class InfoPanel extends JPanel {
         this.add(infoLabel);
     }
 
+    /**
+     * Accessor for the infoLabel field.
+     * @return the infoLabel instance.
+     */
     public JLabel getInfoLabel() {
         return infoLabel;
+    }
+
+    /**
+     * Creates and adds a GenderLegendPanel object to this JPanel.
+     */
+    public void showLegendPanel() {
+        genderLegendPanel = new GenderLegendPanel();
+        this.add(genderLegendPanel);
     }
 }
