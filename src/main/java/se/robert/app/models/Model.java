@@ -41,6 +41,10 @@ public class Model {
     /** Ordered map of year labels to their internal index values.*/
     private  LinkedHashMap<String, Integer> years;
 
+    /**
+     * Constructs the model and sets the api client via dependency injection.
+     * @param client the ApiClient to be used for data retrieval.
+     */
     public Model(ApiClient client) {
         this.apiClient = client;
     }
@@ -58,13 +62,13 @@ public class Model {
     /**
      * Helper method for retrieving specific dimensions data
      * from the JSON-stat response.
-     * @param root The JSON Object containing the data.
+     * @param rootObject The JSON Object containing the data.
      * @param dimension Name of the dimension to access.
      * @param key The key for what specific dimension data to retrieve.
      * @return Integer value for the specific data point.
      */
-    private int getSpecificDimensionData(JsonObject root, String dimension, String key) {
-        return root.getAsJsonObject(AppConfig.DIMENSION_MEMBER_NAME)
+    private int getSpecificDimensionData(JsonObject rootObject, String dimension, String key) {
+        return rootObject.getAsJsonObject(AppConfig.DIMENSION_MEMBER_NAME)
                 .getAsJsonObject(dimension)
                 .getAsJsonObject(AppConfig.CATEGORY_MEMBER_NAME)
                 .getAsJsonObject(AppConfig.INDEX_MEMBER_NAME)
@@ -89,12 +93,12 @@ public class Model {
            throw new ModelException("DimensionIds and dimension sizes lists differ in length.");
         }
 
-        LinkedHashMap<String, Integer> dimensionSizes = new LinkedHashMap<>();
+        LinkedHashMap<String, Integer> dimensionSizesMap = new LinkedHashMap<>();
 
         for (int i = 0; i < dimensionIDs.size(); i++) {
-            dimensionSizes.put(dimensionIDs.get(i).getAsString(), sizes.get(i).getAsInt());
+            dimensionSizesMap.put(dimensionIDs.get(i).getAsString(), sizes.get(i).getAsInt());
         }
-        return dimensionSizes;
+        return dimensionSizesMap;
     }
 
     /**
