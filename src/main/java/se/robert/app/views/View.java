@@ -51,19 +51,28 @@ public class View extends JFrame {
         this.setLocationRelativeTo(null);
     }
 
+    /**
+     * Accessor for the leftPanel member.
+     * @return the LeftPanel object contained in this class.
+     */
     public LeftPanel getLeftPanel() {
         return leftPanel;
     }
 
-    public RightPanel getRightPanel() {
-        return rightPanel;
-    }
-
+    /**
+     * Updates the chart with new data and shows a legend in the information panel.
+     * @param data List of {@link YearData} objects.
+     */
     public void showData(LinkedList<YearData> data) {
         leftPanel.getInfoPanel().showLegendPanel();
         rightPanel.setData(data);
     }
 
+    /**
+     * Shows an information dialog with the specified title and message.
+     * @param title the title
+     * @param message the message
+     */
     public void showInfoDialog(String title, String message) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
     }

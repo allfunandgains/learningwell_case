@@ -5,15 +5,30 @@ import se.robert.app.utilities.AppConfig;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * A custom JPanel that renders a percentage scale bar drawn with a {@link Graphics2D}
+ * instance.
+ *
+ * @author Robert Kullman
+ */
 public class ScaleBarPanel extends JPanel {
 
 
-
+    /**
+     * Constructs a {@code ScaleBarPanel} with a transparent background
+     * and a fixed preferred width.
+     * The height is determined by the parent layout, allowing the
+     * scale bar to align dynamically with adjacent diagram components.
+     */
     public ScaleBarPanel() {
         setOpaque(false);
         setPreferredSize(new Dimension(AppConfig.SCALE_BAR_WIDTH, 0));
     }
 
+    /**
+     * Paints the scale bar, with major and minor ticks every 20% and 10%, respectively.
+     * @param g the <code>Graphics</code> object to protect
+     */
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
