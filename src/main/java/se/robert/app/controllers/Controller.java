@@ -64,10 +64,12 @@ public class Controller {
                 try {
                     CountryDataSet data = get();
 
+                    String modifiedInput = input.toUpperCase(Locale.ROOT).trim();
+
                     view.getLeftPanel()
                             .getInfoPanel()
                             .getInfoLabel()
-                            .setText(AppConfig.INFO_PANEL_LABEL_TEXT + model.getCurrentCountryName(input.toUpperCase(Locale.ROOT)));
+                            .setText(AppConfig.INFO_PANEL_LABEL_TEXT + model.getCurrentCountryName(modifiedInput));
 
                     view.showData(data.data());
 
