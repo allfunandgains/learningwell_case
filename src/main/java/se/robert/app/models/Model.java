@@ -26,10 +26,19 @@ import java.util.Map;
  */
 public class Model {
 
+    /** Client used to retrieve JSON data from the API. */
     private final ApiClient apiClient;
+
+    /** Root JSON object representing the parsed API response. */
     private JsonObject root;
 
+    /**
+     * Maps dimension names to their respective sizes.
+     * The order corresponds to the API's dimension order.
+     */
     private Map<String, Integer> dimensionSizes;
+
+    /** Ordered map of year labels to their internal index values.*/
     private  LinkedHashMap<String, Integer> years;
 
     public Model(ApiClient client) {
@@ -43,7 +52,7 @@ public class Model {
         String jsonData = apiClient.getData(AppConfig.API_ADDRESS);
         root = JsonParser.parseString(jsonData).getAsJsonObject();
         dimensionSizes = buildDimensionSizes();
-        years = getYearsMap();
+        years = buildYearsMap();
     }
 
     /**
@@ -63,6 +72,11 @@ public class Model {
                 .getAsInt();
     }
 
+    /**
+     * Builds a mapping between dimension identifiers and their sizes.
+     * @return an ordered map of dimension names to dimension sizes.
+     * @throws ModelException if the root object is null or inconsistent.
+     */
     private LinkedHashMap<String, Integer> buildDimensionSizes() throws ModelException {
         if (root == null) {
             throw new ModelException("Root object is null.");
@@ -83,6 +97,11 @@ public class Model {
         return dimensionSizes;
     }
 
+    /**
+     * Creates a base selection containing all fixed dimension values
+     * except geography and time period.
+     * @return a map of dimension names to index values.
+     */
     private Map<String, Integer> baseSelection() {
         Map<String, Integer> m = new HashMap<>();
         m.put(AppConfig.FREQ_MEMBER_NAME, getSpecificDimensionData(root, AppConfig.FREQ_MEMBER_NAME, AppConfig.FREQUENCY_ANNUAL_INDEX_VALUE));
@@ -93,12 +112,24 @@ public class Model {
         return m;
     }
 
+    /**
+     * Extends the base selection with a specific country.
+     * @param countryISO the ISO country code.
+     * @return a populated selection map including geography.
+     */
     private Map<String, Integer> baseSelectionWithCountry(String countryISO) {
         Map<String, Integer> selection = baseSelection();
         selection.put(AppConfig.GEO_MEMBER_NAME,  getSpecificDimensionData(root, AppConfig.GEO_MEMBER_NAME, countryISO));
         return selection;
     }
 
+    /**
+     * Generates a dataset containing unemployment data for a given country. Each year in the
+     * time series contains data for males and females.
+     * @param countryISO the ISO code of the country.
+     * @return a {@link CountryDataSet} containing yearly data.
+     * @throws ModelException id data processing fails.
+     */
     public CountryDataSet generateDataSet(String countryISO) throws ModelException {
         if (root == null) {
             try {
@@ -117,9 +148,7 @@ public class Model {
             throw new ModelException("The specified ISO code was not found.");
         }
 
-
         LinkedList<YearData> dataList = new LinkedList<>();
-
         Map<String, Integer> selection = baseSelectionWithCountry(countryISO);
 
         years.forEach((key, year) -> {
@@ -139,6 +168,12 @@ public class Model {
         return new CountryDataSet(dataList, getCurrentCountryName(countryISO));
     }
 
+    /**
+     * Calculates the row-major ordering index for a multidimensional selection.
+     * @param selection map of dimension member names to indices.
+     * @param dimensionSizes map of dimension names to sizes.
+     * @return a flattened index for the specified selection.
+     */
     private int flatIndexFor(Map<String, Integer> selection, Map<String, Integer> dimensionSizes) {
         List<Integer> indices = AppConfig.DIMENSION_ORDER.stream()
                 .map(selection::get)
@@ -151,7 +186,11 @@ public class Model {
         return calculateFlatIndex(indices, sizes);
     }
 
-    private LinkedHashMap<String, Integer> getYearsMap() {
+    /**
+     * Builds an ordered map of the time series available in the root JSON data object.
+     * @return an ordered mapping of years to indices.
+     */
+    private LinkedHashMap<String, Integer> buildYearsMap() {
         LinkedHashMap<String, Integer> years = new LinkedHashMap<>();
 
         JsonObject yearIndex = root
@@ -167,6 +206,12 @@ public class Model {
         return years;
     }
 
+    /**
+     * Calculates the flat index from specified indices and sizes.
+     * @param indices a list of the indices for each dimension.
+     * @param sizes the size of each dimension.
+     * @return the computed index.
+     */
     private int calculateFlatIndex(List<Integer> indices, List<Integer> sizes) {
         int idx = 0;
         for (int k = 0; k < sizes.size(); k++) {
@@ -175,6 +220,12 @@ public class Model {
         return idx;
     }
 
+    /**
+     * Retrieves a value from the JSON value array corresponding to the specified index key.
+     * @param key the row-major order key.
+     * @param root the root JSON object.
+     * @return the value, or NaN if missing.
+     */
     private float getValue(String key, JsonObject root) {
         JsonElement e = root.getAsJsonObject(AppConfig.VALUE_MEMBER_NAME).get(key);
         if (e == null || e.isJsonNull()) {
@@ -183,6 +234,11 @@ public class Model {
         return e.getAsFloat();
     }
 
+    /**
+     * Retrieves the country name corresponding to a specific ISO code.
+     * @param countryISO the country ISO code.
+     * @return the country name.
+     */
     public String getCurrentCountryName(String countryISO) {
         return root
                 .getAsJsonObject(AppConfig.DIMENSION_MEMBER_NAME)
