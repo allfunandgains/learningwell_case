@@ -11,29 +11,44 @@ import javax.swing.SwingWorker;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * The Controller coordinates communication between the View and the Model in the MVC
+ * architecture.
+ *
+ * @author Robert Kullman
+ */
 public class Controller {
 
     private final View view;
     private final Model  model;
 
+    /**
+     * Constructs the Controller and initializes the application.
+     */
     public Controller() {
         view = new View();
         model = new Model(new ApiClient());
         addActionListeners();
     }
 
+    /**
+     * Adds actionListeners to the GUI.
+     */
     private void addActionListeners() {
         view.getLeftPanel().getInputPanel().getDisplayButton().addActionListener((e) -> showData());
     }
 
+    /**
+     * Performs asynchronous data retrieval based on user input.
+     * Data retrieval is delegated to a {@link SwingWorker} thread.
+     * Upon completion, data is displayed in the view.
+     */
     private void showData() {
         String input = view.getLeftPanel()
                 .getInputPanel()
                 .getInputField()
                 .getText()
                 .toUpperCase(Locale.ROOT);
-
-
 
         view.getLeftPanel().getInfoPanel().getInfoLabel().setText("Loading...");
 
@@ -48,7 +63,6 @@ public class Controller {
             protected void done() {
                 try {
                     CountryDataSet data = get();
-
 
                     view.getLeftPanel()
                             .getInfoPanel()
@@ -68,7 +82,6 @@ public class Controller {
                                 "An unexpected error occurred while fetching data."
                         );
                     }
-
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                     view.getLeftPanel().getInfoPanel().getInfoLabel().setText("");

@@ -15,17 +15,33 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+/**
+ * Represents the bar chart area. Allows for instantiating
+ * a number of {@link YearBarPanel} objects each representing
+ * the data for one single year.
+ *
+ * @author Robert Kullman
+ */
 public class DiagramPanel extends JPanel {
 
     private final JPanel columnsPanel;
     private final int columnWidth;
     private final int chartHeight;
 
-
+    /**
+     * Basic constructor for the DiagramPanel class, using
+     * default size values for columns.
+     */
     public DiagramPanel() {
         this(AppConfig.DEFAULT_COLUMN_WIDTH, AppConfig.DEFAULT_CHART_HEIGHT);
     }
 
+    /**
+     * Overloads the basic constructor, allowing specific size specification
+     * for columns.
+     * @param columnWidth the column width in pixels.
+     * @param chartHeight the column height in pixels.
+     */
     public DiagramPanel(int columnWidth, int chartHeight) {
         this.columnWidth = columnWidth;
         this.chartHeight = chartHeight;
@@ -79,6 +95,10 @@ public class DiagramPanel extends JPanel {
         repaint();
     }
 
+    /**
+     * Creates a JLabel for indicating a lack of data do display.
+     * @return the instantiated JLabel object.
+     */
     private JComponent createEmptyStateLabel() {
         return new JLabel("No data to display", SwingConstants.CENTER);
     }

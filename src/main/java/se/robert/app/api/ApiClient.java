@@ -15,6 +15,15 @@ public class ApiClient {
 
     HttpClient client = HttpClient.newHttpClient();
 
+    /**
+     * Sends an HTTP GET request to the specified URL and returns the response body.
+     * @param url the URL to send the request to
+     * @return the response body as a String
+     * @throws IOException if a network error occurs or if the server responds
+     *                     with a status code of 400 or higher
+     * @throws InterruptedException if the calling thread is interrupted while
+     *                              waiting for the response
+     */
     public String getData(String url) throws IOException, InterruptedException {
 
             HttpRequest request = HttpRequest.newBuilder(URI.create(url)).build();
@@ -24,6 +33,4 @@ public class ApiClient {
             }
             return response.body();
     }
-
-
 }
