@@ -19,7 +19,10 @@ import java.util.concurrent.ExecutionException;
  */
 public class Controller {
 
+    /** The main view instance. */
     private final View view;
+
+    /** The model instance. */
     private final Model  model;
 
     /**
@@ -78,11 +81,13 @@ public class Controller {
 
                     if (cause instanceof ModelException me) {
                         view.showInfoDialog("Exception", me.getMessage());
+                        view.getLeftPanel().getInfoPanel().getInfoLabel().setText("");
                     } else {
                         view.showInfoDialog(
                                 "Error",
                                 "An unexpected error occurred while fetching data."
                         );
+                        view.getLeftPanel().getInfoPanel().getInfoLabel().setText("");
                     }
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();

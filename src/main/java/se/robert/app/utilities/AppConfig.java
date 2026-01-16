@@ -14,7 +14,7 @@ public final class AppConfig {
     /**
      * Private constructor to prevent instantiation.
      */
-    private AppConfig() {}
+    private AppConfig() { }
 
     public static final String API_ADDRESS = "https://webgate.ec.europa.eu/empl/redisstat/api/dissemination/sdmx/2.1/data/lmp_ind_actru?format=json&compressed=false";
 
