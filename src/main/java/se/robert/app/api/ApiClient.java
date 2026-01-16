@@ -14,9 +14,13 @@ import java.time.Duration;
  */
 public class ApiClient {
 
+    /** connection timeout limit in seconds. */
     private static final Duration CONNECT_TIMEOUT = Duration.ofSeconds(5);
+
+    /** request timeout limit in seconds. */
     private static final Duration REQUEST_TIMEOUT = Duration.ofSeconds(10);
 
+    /** Client instance. */
     private final HttpClient client = HttpClient.newBuilder()
             .connectTimeout(CONNECT_TIMEOUT)
             .build();
