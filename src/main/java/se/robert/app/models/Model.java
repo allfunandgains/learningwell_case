@@ -260,7 +260,7 @@ public class Model {
                 .getAsJsonObject(AppConfig.DIMENSION_MEMBER_NAME)
                 .getAsJsonObject(AppConfig.GEO_MEMBER_NAME)
                 .getAsJsonObject(AppConfig.CATEGORY_MEMBER_NAME)
-                .getAsJsonObject("label")
+                .getAsJsonObject(AppConfig.LABEL_MEMBER_NAME)
                 .get(countryISO).getAsString();
     }
 }

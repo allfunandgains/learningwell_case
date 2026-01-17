@@ -4,6 +4,7 @@ import se.robert.app.api.ApiClient;
 import se.robert.app.models.Model;
 import se.robert.app.models.exceptions.ModelException;
 import se.robert.app.records.CountryDataSet;
+import se.robert.app.utilities.AppConfig;
 import se.robert.app.views.View;
 
 import javax.swing.SwingWorker;
@@ -88,7 +89,7 @@ public class Controller {
                     Throwable cause = e.getCause();
 
                     if (cause instanceof ModelException me) {
-                        view.showInfoDialog("Exception", me.getMessage());
+                        view.showInfoDialog(AppConfig.EXCEPTION_TITLE, me.getMessage());
                         view.getLeftPanel().getInfoPanel().clearInfoText();
                     } else {
                         view.showInfoDialog(

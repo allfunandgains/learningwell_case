@@ -27,6 +27,7 @@ public final class AppConfig {
     public static final String TIME_PERIOD_MEMBER_NAME = "TIME_PERIOD";
     public static final String CATEGORY_MEMBER_NAME = "category";
     public static final String INDEX_MEMBER_NAME = "index";
+    public static final String LABEL_MEMBER_NAME = "label";
     public static final String VALUE_MEMBER_NAME = "value";
     public static final String TIME_PERIOD_KEY = "TIME_PERIOD";
     public static final String SEX_MEMBER_NAME = "SEX";
@@ -75,6 +76,7 @@ public final class AppConfig {
     public static final int SCALE_BAR_WIDTH = 60;
     public static final int INFO_PANEL_WIDTH = 300;
     public static final int INFO_PANEL_HEIGHT = 250;
+    public static final int INFO_LABEL_HEIGHT = 25;
     public static final int INPUT_PANEL_WIDTH = 300;
     public static final int INPUT_PANEL_HEIGHT = 250;
     public static final int INPUT_FIELD_COLUMNS = 10;
@@ -85,6 +87,8 @@ public final class AppConfig {
     public static final String INPUT_LABEL_TEXT = "Specify ISO code: ";
     public static final String DISPLAY_CHART_BUTTON_TEXT = "Display chart";
     public static final String INSTRUCTIONS_TITLE = "Instructions";
+    public static final String EXCEPTION_TITLE = "Exception";
+
     public static final String INSTRUCTIONS_TEXT = """
             This application displays EU unemployment activation statistics over time,
             with a comparison between men and women.

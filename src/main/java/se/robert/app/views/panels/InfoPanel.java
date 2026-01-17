@@ -22,7 +22,7 @@ public class InfoPanel extends JPanel {
     public InfoPanel() {
         infoLabel = new JLabel();
         infoLabel.setFont(AppConfig.STANDARD_FONT);
-        infoLabel.setPreferredSize(new Dimension(AppConfig.INFO_PANEL_WIDTH, 50));
+        infoLabel.setPreferredSize(new Dimension(AppConfig.INFO_PANEL_WIDTH, AppConfig.INFO_PANEL_HEIGHT));
         infoLabel.setHorizontalAlignment(JLabel.CENTER);
         this.setPreferredSize(new Dimension(AppConfig.INFO_PANEL_WIDTH, AppConfig.INFO_PANEL_HEIGHT));
 
