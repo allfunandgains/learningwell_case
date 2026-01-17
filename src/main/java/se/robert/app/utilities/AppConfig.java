@@ -84,4 +84,14 @@ public final class AppConfig {
     public static final String INFO_PANEL_LABEL_TEXT = "Displaying data for: ";
     public static final String INPUT_LABEL_TEXT = "Specify ISO code: ";
     public static final String DISPLAY_CHART_BUTTON_TEXT = "Display chart";
+    public static final String INSTRUCTIONS_TITLE = "Instructions";
+    public static final String INSTRUCTIONS_TEXT = """
+            This application displays EU unemployment activation statistics over time,
+            with a comparison between men and women.
+            
+            Enter a two-letter ISO country code (e.g. SE or DE) in the input
+            field to load data for a country, or provide the ISO code as a
+            command-line argument at startup.
+            """
+            ;
 }

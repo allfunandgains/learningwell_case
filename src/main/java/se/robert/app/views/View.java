@@ -2,6 +2,7 @@ package se.robert.app.views;
 
 import se.robert.app.records.YearData;
 import se.robert.app.utilities.AppConfig;
+import se.robert.app.views.menus.MainMenuBar;
 import se.robert.app.views.panels.LeftPanel;
 import se.robert.app.views.panels.RightPanel;
 
@@ -25,6 +26,9 @@ public class View extends JFrame {
     /** The right GUI panel. */
     private RightPanel rightPanel;
 
+    /** The menu bar. */
+    private MainMenuBar mainMenuBar;
+
     /**
      * Constructor for the View class.
      */
@@ -45,9 +49,11 @@ public class View extends JFrame {
 
         leftPanel = new LeftPanel();
         rightPanel = new RightPanel();
+        mainMenuBar = new MainMenuBar();
 
         this.add(leftPanel);
         this.add(rightPanel);
+        this.setJMenuBar(mainMenuBar);
 
         this.pack();
         this.setVisible(true);
@@ -85,5 +91,20 @@ public class View extends JFrame {
      */
     public void clearData() {
         rightPanel.clearChart();
+    }
+
+    /**
+     * Accessor for the main menu bar.
+     * @return a JMenuBar object.
+     */
+    public MainMenuBar getMainMenuBar() {
+        return mainMenuBar;
+    }
+
+    /**
+     * Shows a dialog with app usage instructions.
+     */
+    public void showInstructionsDialog() {
+        JOptionPane.showMessageDialog(this, AppConfig.INSTRUCTIONS_TEXT, AppConfig.INSTRUCTIONS_TITLE, JOptionPane.INFORMATION_MESSAGE);
     }
 }

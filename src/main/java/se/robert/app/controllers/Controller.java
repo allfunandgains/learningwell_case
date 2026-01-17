@@ -46,6 +46,8 @@ public class Controller {
      */
     private void addActionListeners() {
         view.getLeftPanel().getInputPanel().getDisplayButton().addActionListener((e) -> showData());
+        view.getMainMenuBar().getExitMenuItem().addActionListener((e) -> System.exit(0));
+        view.getMainMenuBar().getInstructionsMenuItem().addActionListener((e) -> view.showInstructionsDialog());
     }
 
     /**
