@@ -107,4 +107,11 @@ public class DiagramPanel extends JPanel {
     private JComponent createEmptyStateLabel() {
         return new JLabel("No data to display", SwingConstants.CENTER);
     }
+
+    /**
+     * Clears the chart area, removing all present YearBarPanel objects.
+     */
+    public void clearChart() {
+        columnsPanel.removeAll();
+    }
 }

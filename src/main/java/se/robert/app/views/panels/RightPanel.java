@@ -56,4 +56,11 @@ public class RightPanel extends JPanel {
         revalidate();
         repaint();
     }
+
+    /**
+     * Clears the chart area in the diagramPanel.
+     */
+    public void clearChart() {
+        diagramPanel.clearChart();
+    }
 }

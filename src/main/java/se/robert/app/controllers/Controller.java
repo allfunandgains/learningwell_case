@@ -4,7 +4,6 @@ import se.robert.app.api.ApiClient;
 import se.robert.app.models.Model;
 import se.robert.app.models.exceptions.ModelException;
 import se.robert.app.records.CountryDataSet;
-import se.robert.app.utilities.AppConfig;
 import se.robert.app.views.View;
 
 import javax.swing.SwingWorker;
@@ -47,13 +46,15 @@ public class Controller {
      * Upon completion, data is displayed in the view.
      */
     private void showData() {
+        view.clearData();
         String input = view.getLeftPanel()
                 .getInputPanel()
                 .getInputField()
                 .getText()
                 .toUpperCase(Locale.ROOT);
 
-        view.getLeftPanel().getInfoPanel().getInfoLabel().setText("Loading...");
+        view.getLeftPanel().getInfoPanel().hideLegendPanel();
+        view.getLeftPanel().getInfoPanel().setLoadingText();
 
         SwingWorker<CountryDataSet, Void> worker = new SwingWorker<>() {
 
@@ -67,12 +68,9 @@ public class Controller {
                 try {
                     CountryDataSet data = get();
 
-                    String modifiedInput = input.toUpperCase(Locale.ROOT).trim();
-
                     view.getLeftPanel()
                             .getInfoPanel()
-                            .getInfoLabel()
-                            .setText(AppConfig.INFO_PANEL_LABEL_TEXT + model.getCurrentCountryName(modifiedInput));
+                            .setInfoText(data.countryName());
 
                     view.showData(data.data());
 
@@ -81,17 +79,17 @@ public class Controller {
 
                     if (cause instanceof ModelException me) {
                         view.showInfoDialog("Exception", me.getMessage());
-                        view.getLeftPanel().getInfoPanel().getInfoLabel().setText("");
+                        view.getLeftPanel().getInfoPanel().clearInfoText();
                     } else {
                         view.showInfoDialog(
                                 "Error",
                                 "An unexpected error occurred while fetching data."
                         );
-                        view.getLeftPanel().getInfoPanel().getInfoLabel().setText("");
+                        view.getLeftPanel().getInfoPanel().clearInfoText();
                     }
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
-                    view.getLeftPanel().getInfoPanel().getInfoLabel().setText("");
+                    view.getLeftPanel().getInfoPanel().clearInfoText();
                 }
             }
         };

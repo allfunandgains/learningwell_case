@@ -14,12 +14,16 @@ public class InfoPanel extends JPanel {
     /** JLabel for displaying information to the user. */
     private final JLabel infoLabel;
 
+    private GenderLegendPanel genderLegendPanel;
+
     /**
      * Constructs the panel and set up the GUI components.
      */
     public InfoPanel() {
         infoLabel = new JLabel();
         infoLabel.setFont(AppConfig.STANDARD_FONT);
+        infoLabel.setPreferredSize(new Dimension(AppConfig.INFO_PANEL_WIDTH, 50));
+        infoLabel.setHorizontalAlignment(JLabel.CENTER);
         this.setPreferredSize(new Dimension(AppConfig.INFO_PANEL_WIDTH, AppConfig.INFO_PANEL_HEIGHT));
 
         this.add(infoLabel);
@@ -37,7 +41,48 @@ public class InfoPanel extends JPanel {
      * Creates and adds a GenderLegendPanel object to this JPanel.
      */
     public void showLegendPanel() {
-        GenderLegendPanel genderLegendPanel = new GenderLegendPanel();
-        this.add(genderLegendPanel);
+        if (genderLegendPanel == null) {
+            genderLegendPanel = new GenderLegendPanel();
+            this.add(genderLegendPanel);
+        }
+        genderLegendPanel.setVisible(true);
+        revalidate();
+        repaint();
+    }
+
+    /**
+     * Hides the legend panel.
+     */
+    public void hideLegendPanel() {
+        if (genderLegendPanel != null) {
+            genderLegendPanel.setVisible(false);
+        }
+    }
+
+    /**
+     * Sets the info text.
+     * @param countryName the country name.
+     */
+    public void setInfoText(String countryName) {
+        infoLabel.setText(
+                "<html>"
+                        + AppConfig.INFO_PANEL_LABEL_TEXT
+                        + countryName
+                        + "</html>"
+        );
+    }
+
+    /**
+     * Sets the text of the infoLabel field to indicate loading.
+     */
+    public void setLoadingText() {
+        infoLabel.setText("Loading...");
+    }
+
+    /**
+     * Clears the infoLabel field text.
+     */
+    public void clearInfoText() {
+        infoLabel.setText("");
     }
 }

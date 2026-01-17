@@ -79,4 +79,11 @@ public class View extends JFrame {
     public void showInfoDialog(String title, String message) {
         JOptionPane.showMessageDialog(this, message, title, JOptionPane.INFORMATION_MESSAGE);
     }
+
+    /**
+     * Clears the chart area in the diagram panel.
+     */
+    public void clearData() {
+        rightPanel.clearChart();
+    }
 }
