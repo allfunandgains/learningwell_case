@@ -14,6 +14,7 @@ public class InfoPanel extends JPanel {
     /** JLabel for displaying information to the user. */
     private final JLabel infoLabel;
 
+    /** Custom JPanel for displaying a chart legend. */
     private GenderLegendPanel genderLegendPanel;
 
     /**
@@ -27,14 +28,6 @@ public class InfoPanel extends JPanel {
         this.setPreferredSize(new Dimension(AppConfig.INFO_PANEL_WIDTH, AppConfig.INFO_PANEL_HEIGHT));
 
         this.add(infoLabel);
-    }
-
-    /**
-     * Accessor for the infoLabel field.
-     * @return the infoLabel instance.
-     */
-    public JLabel getInfoLabel() {
-        return infoLabel;
     }
 
     /**
