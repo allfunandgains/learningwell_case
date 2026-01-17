@@ -26,11 +26,19 @@ public class Controller {
 
     /**
      * Constructs the Controller and initializes the application.
+     * @param initialIso optional ISO country code entered as CLI
+     *                   argument. If present, the corresponding
+     *                   country data is loaded automatically.
      */
-    public Controller() {
+    public Controller(String initialIso) {
         view = new View();
         model = new Model(new ApiClient());
         addActionListeners();
+
+        if (initialIso != null) {
+            view.getLeftPanel().getInputPanel().getInputField().setText(initialIso);
+            showData();
+        }
     }
 
     /**

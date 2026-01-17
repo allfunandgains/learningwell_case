@@ -20,6 +20,7 @@ public final class Main {
      * @param args Command arguments. Not relevant for this solution.
      */
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(Controller::new);
+        String initialIso = (args.length > 0) ? args[0].trim().toUpperCase() : null;
+        SwingUtilities.invokeLater(() -> {Controller controller = new Controller(initialIso);});
     }
 }
