@@ -155,7 +155,10 @@ public class Model {
         LinkedList<YearData> dataList = new LinkedList<>();
         Map<String, Integer> selection = baseSelectionWithCountry(countryISO);
 
-        years.forEach((key, year) -> {
+        for (Map.Entry<String, Integer> entry : years.entrySet()) {
+            String key = entry.getKey();
+            int year = entry.getValue();
+
             selection.put(AppConfig.TIME_PERIOD_KEY, year);
             selection.put(AppConfig.SEX_MEMBER_NAME, AppConfig.SEX_MALE_VALUE);
 
@@ -168,7 +171,7 @@ public class Model {
             float femaleValue = getValue(Integer.toString(femaleIndex), root);
 
             dataList.add(new YearData(Integer.parseInt(key), maleValue, femaleValue));
-        });
+        }
         return new CountryDataSet(dataList, getCurrentCountryName(countryISO));
     }
 
@@ -230,8 +233,17 @@ public class Model {
      * @param rootObject the rootObject JSON object.
      * @return the value, or NaN if missing.
      */
-    private float getValue(String key, JsonObject rootObject) {
-        JsonElement e = rootObject.getAsJsonObject(AppConfig.VALUE_MEMBER_NAME).get(key);
+    private float getValue(String key, JsonObject rootObject) throws ModelException {
+        if (rootObject == null) {
+            throw new ModelException("Root object is null.");
+        }
+
+        JsonObject values = rootObject.getAsJsonObject(AppConfig.VALUE_MEMBER_NAME);
+        if (values == null) {
+            throw new ModelException("Dataset is missing expected 'value' object.");
+        }
+
+        JsonElement e = values.get(key);
         if (e == null || e.isJsonNull()) {
             return Float.NaN;
         }
