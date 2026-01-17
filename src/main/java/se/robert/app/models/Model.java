@@ -154,6 +154,7 @@ public class Model {
 
         LinkedList<YearData> dataList = new LinkedList<>();
         Map<String, Integer> selection = baseSelectionWithCountry(countryISO);
+        boolean hasData = false;
 
         for (Map.Entry<String, Integer> entry : years.entrySet()) {
             String key = entry.getKey();
@@ -170,7 +171,14 @@ public class Model {
             int femaleIndex = flatIndexFor(selection, dimensionSizes);
             float femaleValue = getValue(Integer.toString(femaleIndex), root);
 
+            if (!Float.isNaN(maleValue) || !Float.isNaN(femaleValue)) {
+                hasData = true;
+            }
+
             dataList.add(new YearData(Integer.parseInt(key), maleValue, femaleValue));
+        }
+        if (!hasData) {
+            dataList.clear();
         }
         return new CountryDataSet(dataList, getCurrentCountryName(countryISO));
     }
