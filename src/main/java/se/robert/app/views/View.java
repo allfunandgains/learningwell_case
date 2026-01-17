@@ -19,8 +19,11 @@ import java.util.LinkedList;
  */
 public class View extends JFrame {
 
-    LeftPanel leftPanel;
-    RightPanel rightPanel;
+    /** The left GUI panel. */
+    private LeftPanel leftPanel;
+
+    /** The right GUI panel. */
+    private RightPanel rightPanel;
 
     /**
      * Constructor for the View class.

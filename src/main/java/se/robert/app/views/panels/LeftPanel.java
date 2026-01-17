@@ -13,10 +13,10 @@ import java.awt.Color;
 public class LeftPanel extends JPanel {
 
     /** Panel used for collecting user input. */
-    InputPanel inputPanel;
+    private final InputPanel inputPanel;
 
     /** Panel used for displaying informational text, status messages, and chart legends. */
-    InfoPanel infoPanel;
+    private final InfoPanel infoPanel;
 
     /**
      * Constructs the panel and initializes its child panels.

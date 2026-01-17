@@ -20,7 +20,7 @@ import java.util.List;
 public class RightPanel extends JPanel {
 
     /** JPanel responsible for showing the stack chart. */
-    DiagramPanel diagramPanel;
+    private final DiagramPanel diagramPanel;
 
     /**
      * Constructs the panel and initializes GUI components and child panels.
