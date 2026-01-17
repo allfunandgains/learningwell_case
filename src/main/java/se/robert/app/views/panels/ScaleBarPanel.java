@@ -2,8 +2,11 @@ package se.robert.app.views.panels;
 
 import se.robert.app.utilities.AppConfig;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JPanel;
+import java.awt.Dimension;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 /**
  * A custom JPanel that renders a percentage scale bar drawn with a {@link Graphics2D}
@@ -39,7 +42,9 @@ public class ScaleBarPanel extends JPanel {
             int h = getHeight();
 
             int plotH = h - AppConfig.YEAR_LABEL_HEIGHT;
-            if (plotH <= 0) return;
+            if (plotH <= 0) {
+                return;
+            }
 
             int usableH = Math.max(1, plotH - AppConfig.PADDING_TOP - AppConfig.PADDING_BOTTOM);
 
