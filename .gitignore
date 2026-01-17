@@ -12,6 +12,7 @@ target/
 *.iws
 *.iml
 *.ipr
+.idea/checkstyle-idea.xml
 
 ### Eclipse ###
 .apt_generated
