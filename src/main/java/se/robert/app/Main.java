@@ -17,7 +17,8 @@ public final class Main {
 
     /**
      * Main method of the application, serving as its entry point.
-     * @param args Command arguments. Not relevant for this solution.
+     * @param args Command arguments. Allows for optional ISO code input
+     *             if starting the app from CLI.
      */
     public static void main(String[] args) {
         String initialIso = (args.length > 0) ? args[0].trim().toUpperCase() : null;
